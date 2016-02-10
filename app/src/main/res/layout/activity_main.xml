@@ -17,40 +17,12 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true">
 
-        <Button
-            android:layout_width="fill_parent"
+        <ListView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/handywork"
-            android:id="@+id/button_handywork"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/rides"
-            android:id="@+id/button_rides"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/tools"
-            android:id="@+id/button_tools"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/programming"
-            android:id="@+id/button_programming"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/other"
-            android:id="@+id/button_other"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/listView_main"
+            android:layout_gravity="center_horizontal"
+            android:entries="@array/sections" />
     </LinearLayout>
 
     <LinearLayout

@@ -3,72 +3,34 @@ package com.greidan.greidan.greidan;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity {
+import java.util.List;
 
-    private Button mButtonHandywork;
-    private Button mButtonRides;
-    private Button mButtonTools;
-    private Button mButtonProgramming;
-    private Button mButtonOther;
-
-
+public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mButtonHandywork = (Button) findViewById(R.id.button_handywork);
-        mButtonRides = (Button) findViewById(R.id.button_rides);
-        mButtonTools = (Button) findViewById(R.id.button_tools);
-        mButtonProgramming = (Button) findViewById(R.id.button_programming);
-        mButtonOther = (Button) findViewById(R.id.button_other);
+        ListView listView = (ListView) findViewById(R.id.listView_main);
+        listView.setOnItemClickListener(this);
+    }
 
-        mButtonHandywork.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
+    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
 
-//                Toast.makeText(MainActivity.this, "Foobar", Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(MainActivity.this, AdListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        mButtonRides.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
-
-        mButtonTools.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
-
-        mButtonProgramming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
-
-        mButtonOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO
-            }
-        });
+        Intent intent = new Intent(this, AdListActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
     }
 
     @Override

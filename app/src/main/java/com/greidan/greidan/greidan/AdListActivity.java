@@ -1,12 +1,16 @@
 package com.greidan.greidan.greidan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 public class AdListActivity extends ActionBarActivity {
+
+    Button[] mButtons;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,11 +18,11 @@ public class AdListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_ad_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        LinearLayout layout = (LinearLayout) findViewById(R.id.foobar);
-        Button foo = new Button(this);
-        foo.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        foo.setText("Foobar");
-        layout.addView(foo);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        long id = (long) bundle.get("id");
+        Log.i("AdListActivity", "Got this from intent: " + id);
+
     }
 
 }

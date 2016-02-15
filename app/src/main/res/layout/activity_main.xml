@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/listView_main"
             android:layout_gravity="center_horizontal"
-            android:entries="@array/sections" />
+            android:entries="@array/categories" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/post"
-            android:id="@+id/button_post"
+            android:id="@+id/button_new_post"
             android:layout_gravity="bottom"
             android:layout_weight="1"/>
 

@@ -16,17 +16,35 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
+    Button mButtonNewPost;
+
+    boolean isLoggedIn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(!isLoggedIn) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
         ListView listView = (ListView) findViewById(R.id.listView_main);
         listView.setOnItemClickListener(this);
+
+        mButtonNewPost = (Button) findViewById(R.id.button_new_post);
+        mButtonNewPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, NewAdActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
+        Log.i("MainActivityListView", "You clicked Item: " + id + " at position:" + position);
 
         Intent intent = new Intent(this, AdListActivity.class);
         intent.putExtra("id", id);

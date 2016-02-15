@@ -19,8 +19,7 @@ public class AdListActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        long id = (long) bundle.get("id");
+        long id = (long) intent.getLongExtra("id", -1);
         Log.i("AdListActivity", "Got this from intent: " + id);
 
     }

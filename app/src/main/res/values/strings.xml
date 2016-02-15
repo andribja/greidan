@@ -6,36 +6,57 @@
     <string name="post">Setja inn</string>
     <string name="settings">Stillingar</string>
 
-    <string name="title_activity_ad_list">Auglýsingar</string>
-    <string name="title_activity_new_ad">Ný auglýsing</string>
-    <string name="title_activity_main2">Main2Activity</string>
 
-    <string-array name="sections">
-        <item >Handverk</item>
-        <item >Skutl</item>
-        <item >Lán á tólum</item>
-        <item >Forritun</item>
-        <item >Annað</item>
+    <string-array name="categories">
+        <item>Handverk</item>
+        <item>Skutl</item>
+        <item>Lán á tólum</item>
+        <item>Forritun</item>
+        <item>Annað</item>
     </string-array>
 
     <string-array name="adlist_items">
-        <item >Fullt</item>
-        <item >af</item>
-        <item >augl</item>
-        <item >her</item>
-        <item >foo</item>
-        <item >foo</item>
-        <item >foo</item>
-        <item >foo</item>
-        <item >foo</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >bar</item>
-        <item >Danni</item>
+        <item>Fullt</item>
+        <item>af</item>
+        <item>augl</item>
+        <item>her</item>
+        <item>foo</item>
+        <item>foo</item>
+        <item>foo</item>
+        <item>foo</item>
+        <item>foo</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>bar</item>
+        <item>Danni</item>
     </string-array>
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="confirm_password">Password (confirm)</string>
+    <string name="action_sign_in">Skrá inn</string>
+    <string name="action_register">Skrá notanda</string>
+    <string name="action_sign_in_short">Skrá inn</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="button_register">Nýskráning</string>
+    <string name="button_login">Innskráning</string>
+
+
+
+    <string name="title_activity_ad_list">Auglýsingar</string>
+    <string name="title_activity_new_ad">Ný auglýsing</string>
+    <string name="title_activity_register">Register</string>
 
 </resources>

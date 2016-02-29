@@ -6,19 +6,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 public class ServerRequest {
@@ -31,21 +31,31 @@ public class ServerRequest {
 
     }
 
-    // TODO: Rename to somthing POST related, abstract code and create a similar GET method
-    public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
+    public JSONObject getFromUrl(String url, List<NameValuePair> params) {
+        String encodedUrl = URLEncodedUtils.format(params, "iso-8859-1");
+        HttpGet httpGet = new HttpGet(encodedUrl);
+
+        return executeRequest(httpGet);
+    }
+
+    public JSONObject postToUrl(String url, List<NameValuePair> params) {
+        HttpPost httpPost = new HttpPost(url);
         try {
-            DefaultHttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new UrlEncodedFormEntity(params));
-
-            HttpResponse httpResponse = httpClient.execute(httpPost);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            is = httpEntity.getContent();
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
+        }
+
+        return executeRequest(httpPost);
+    }
+
+    public JSONObject executeRequest(HttpRequestBase requestBase) {
+        DefaultHttpClient httpClient = new DefaultHttpClient();
+
+        try {
+            HttpResponse httpResponse = httpClient.execute(requestBase);
+            HttpEntity httpEntity = httpResponse.getEntity();
+            is = httpEntity.getContent();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +66,7 @@ public class ServerRequest {
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "n");
+                sb.append(line).append("n");
             }
             is.close();
             json = sb.toString();

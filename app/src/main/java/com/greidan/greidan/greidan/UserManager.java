@@ -87,7 +87,7 @@ public class UserManager {
             requestParams.add(new BasicNameValuePair("password", password));
 
             ServerRequest request = new ServerRequest();
-            return request.getJSONFromUrl(url, requestParams);
+            return request.postToUrl(url, requestParams);
         }
 
         @Override
@@ -95,17 +95,15 @@ public class UserManager {
             Boolean success = false;
             String message = "";
 
-            try {
-                success = jObj.getBoolean("success");
-                message = jObj.getString("response");
-            } catch (JSONException | NullPointerException e) {
-                e.printStackTrace();
-            }
+            try { success = jObj.getBoolean("success"); }
+            catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
+            try { message = jObj.getString("response"); }
+            catch (JSONException e) { e.printStackTrace(); }
 
             if(success) {
                 try {
                     String token = jObj.getString("token");
-
                     prefs.edit().putString("token", token).apply();
                 } catch (JSONException e) {
                     e.printStackTrace();

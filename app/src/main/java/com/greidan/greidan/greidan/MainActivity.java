@@ -16,16 +16,18 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    Button mButtonNewPost;
+    UserManager userManager;
 
-    boolean isLoggedIn = false;
+    Button mButtonNewPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(!isLoggedIn) {
+        userManager = new UserManager(this);
+
+        if(!userManager.isLoggedIn()) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
@@ -68,6 +70,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if(id == R.id.logout) {
+            userManager.logout();
+
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

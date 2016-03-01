@@ -23,14 +23,14 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/new_ad_title"
                 android:layout_gravity="center_horizontal"
                 android:hint="Titill" />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner"
+                android:id="@+id/new_ad_category"
                 android:entries="@array/categories"
                 android:hint="Veldu flokk"/>
 
@@ -42,7 +42,7 @@
                 android:isScrollContainer="true"
                 android:ems="10"
                 android:gravity="top"
-                android:id="@+id/editText2"
+                android:id="@+id/new_ad_content"
                 android:layout_gravity="center_horizontal"
                 android:hint="Efni" />
 
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Setja inn"
-                    android:id="@+id/button"
+                    android:id="@+id/new_ad_button_post"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"/>
 
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hætta við"
-                    android:id="@+id/button2"
+                    android:id="@+id/new_ad_button_cancel"
                     android:layout_weight="1"/>
             </LinearLayout>
 

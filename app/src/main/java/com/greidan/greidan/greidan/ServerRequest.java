@@ -51,6 +51,7 @@ public class ServerRequest {
 
     public JSONObject executeRequest(HttpRequestBase requestBase) {
         DefaultHttpClient httpClient = new DefaultHttpClient();
+        Log.i("ServerRequest", requestBase.getURI().toString());
 
         try {
             HttpResponse httpResponse = httpClient.execute(requestBase);

@@ -15,25 +15,25 @@
         <item>Annað</item>
     </string-array>
 
-    <string-array name="adlist_items">
-        <item>Fullt</item>
-        <item>af</item>
-        <item>augl</item>
-        <item>her</item>
-        <item>foo</item>
-        <item>foo</item>
-        <item>foo</item>
-        <item>foo</item>
-        <item>foo</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>bar</item>
-        <item>Danni</item>
-    </string-array>
+    <!--<string-array name="adlist_items">-->
+    <!--<item>Fullt</item>-->
+    <!--<item>af</item>-->
+    <!--<item>augl</item>-->
+    <!--<item>her</item>-->
+    <!--<item>foo</item>-->
+    <!--<item>foo</item>-->
+    <!--<item>foo</item>-->
+    <!--<item>foo</item>-->
+    <!--<item>foo</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>bar</item>-->
+    <!--<item>Danni</item>-->
+    <!--</string-array>-->
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
@@ -52,7 +52,6 @@
     </string>
     <string name="button_register">Nýskráning</string>
     <string name="button_login">Innskráning</string>
-
 
 
     <string name="title_activity_ad_list">Auglýsingar</string>

@@ -50,6 +50,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.greidan.greidan.greidan.LoginActivity" />
         </activity>
+        <activity android:name=".AdViewActivity"></activity>
     </application>
 
 </manifest>

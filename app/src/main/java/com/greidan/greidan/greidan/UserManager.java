@@ -53,6 +53,7 @@ public class UserManager {
     }
 
     public boolean isLoggedIn() {
+        // TODO: Invalidate session on server also
         String token = prefs.getString("token", "");
         Log.i("UserManager", token);
         return !token.equals("");

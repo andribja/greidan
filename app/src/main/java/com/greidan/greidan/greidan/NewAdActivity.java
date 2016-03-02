@@ -40,7 +40,7 @@ public class NewAdActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                adManager.postAdToServer(new Ad(title, content, category, new User("foobar")));
+                //adManager.postAdToServer(new Ad(title, content, category, new User("foobar")));
             }
         });
 
@@ -48,10 +48,11 @@ public class NewAdActivity extends ActionBarActivity {
     }
 
     public void doAfterPost(boolean success, String message, int id) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(this, AdViewActivity.class);
         intent.putExtra("id", id);
+
     }
 
 }

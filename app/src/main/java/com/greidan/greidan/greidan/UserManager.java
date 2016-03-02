@@ -59,6 +59,16 @@ public class UserManager {
         return !token.equals("");
     }
 
+    public User findUserByUsername(String username) {
+        // TODO: query database or contact server to find user
+        return new User(0, username, null);
+    }
+
+    public User findUserById(int id) {
+
+        return new User(id, "username", null);
+    }
+
     // An async task that tries to authenticate the user against the server
     private class AuthTask extends AsyncTask<Void, Void, JSONObject> {
 

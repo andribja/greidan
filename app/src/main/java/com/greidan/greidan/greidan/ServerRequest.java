@@ -32,7 +32,7 @@ public class ServerRequest {
     }
 
     public JSONObject getFromUrl(String url, List<NameValuePair> params) {
-        String encodedUrl = URLEncodedUtils.format(params, "iso-8859-1");
+        String encodedUrl = url + "/?" + URLEncodedUtils.format(params, "iso-8859-1");
         HttpGet httpGet = new HttpGet(encodedUrl);
 
         return executeRequest(httpGet);

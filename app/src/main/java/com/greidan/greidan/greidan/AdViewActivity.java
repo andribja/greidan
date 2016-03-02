@@ -21,19 +21,17 @@ public class AdViewActivity extends ActionBarActivity {
 
         adManager = new AdManager(this);
 
-        // TODO: Probably want to pass Ad object directly somehow
+        mTitle = (TextView) findViewById(R.id.ad_view_title);
+        mAuthor = (TextView) findViewById(R.id.ad_view_author);
+        mContent = (TextView) findViewById(R.id.ad_view_content);
+
         Intent intent = getIntent();
         if(intent.hasExtra("id")) {
             int id = (int) getIntent().getIntExtra("id", -1);
             adManager.fetchAd(id);
         } else {
-            //Ad ad = (Ad) getIntent().getSerializableExtra("ad");
             Bundle bundle = getIntent().getExtras();
             Ad ad = (Ad) bundle.getSerializable("ad");
-
-            mTitle = (TextView) findViewById(R.id.ad_view_title);
-            mAuthor = (TextView) findViewById(R.id.ad_view_author);
-            mContent = (TextView) findViewById(R.id.ad_view_content);
 
             mTitle.setText(ad.getTitle());
             mAuthor.setText(ad.getAuthor().getUsername());
@@ -46,6 +44,4 @@ public class AdViewActivity extends ActionBarActivity {
         mAuthor.setText(ad.getAuthor().getUsername());
         mContent.setText(ad.getContent());
     }
-
-
 }

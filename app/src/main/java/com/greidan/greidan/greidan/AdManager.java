@@ -91,16 +91,13 @@ public class AdManager {
         requestParams.add(new BasicNameValuePair("id", Integer.toString(id)));
 
         ServerTask task = new ServerTask(activity, adUrl, false, requestParams);
+        task.execute();
 
         return null;
     }
 
     public void postAdToServer(Ad ad) {
-        ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-        requestParams.add(new BasicNameValuePair("title", ad.getTitle()));
-        requestParams.add(new BasicNameValuePair("content", ad.getContent()));
-        requestParams.add(new BasicNameValuePair("category", ad.getCategory()));
-        requestParams.add(new BasicNameValuePair("author", ad.getAuthor().getUsername()));
+        ArrayList<NameValuePair> requestParams = ad.getRequestParams();
         
         ServerTask task = new ServerTask(activity, adUrl, true, requestParams);
         task.execute();
@@ -117,17 +114,14 @@ public class AdManager {
     private void handleRequestedData(JSONObject jObj) {
         Log.i("AdManager", "handleRequestedData");
 
-        //((AdViewActivity) activity).populateAdView(new Ad(0,"foo","bar","baz",new User(0, "oof", null),null, null));
+//        ArrayList<Ad> ads = new ArrayList<Ad>();
+//        Ad ad1 = new Ad(13, "foo", "bar", "baz", new User(0, "foobar", ""), null, null);
+//        Ad ad2 = new Ad(5, "bar", "baz", "foo", new User(1, "raboof", ""), null, null);
+//        ads.add(ad1);
+//        ads.add(ad2);
+//
+//        ((AdListActivity) activity).populateAdList(ads);
 
-        ArrayList<Ad> ads = new ArrayList<Ad>();
-        Ad ad1 = new Ad(13, "foo", "bar", "baz", new User(0, "foobar", ""), null, null);
-        Ad ad2 = new Ad(5, "bar", "baz", "foo", new User(1, "raboof", ""), null, null);
-        ads.add(ad1);
-        ads.add(ad2);
-
-        ((AdListActivity) activity).populateAdList(ads);
-
-        /*
         ArrayList<Ad> ads = new ArrayList<Ad>();
         Iterator<?> keys = jObj.keys();
 
@@ -137,18 +131,21 @@ public class AdManager {
             Ad ad;
             try {
                 if(jObj.get(key) instanceof JSONObject) {
+                    // We've got a list of ads
                     ad = new Ad((JSONObject) jObj.get(key));
                     ads.add(ad);
                 } else {
+                    // We've got a single ad
                     ad = new Ad(jObj);
                     ((AdViewActivity) activity).populateAdView(ad);
+                    return;
                 }
             } catch (JSONException | ParseException e) {
                 e.printStackTrace();
             }
         }
 
-        ((AdListActivity) activity).populateAdList(ads); */
+        ((AdListActivity) activity).populateAdList(ads);
     }
 
     private class ServerTask extends AsyncTask<Void, Void, JSONObject> {

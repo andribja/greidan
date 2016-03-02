@@ -40,7 +40,7 @@ public class NewAdActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                //adManager.postAdToServer(new Ad(title, content, category, new User("foobar")));
+                adManager.postAdToServer(new Ad(0, title, content, category, new User(0, "foobar", "raboof"), null, null));
             }
         });
 

@@ -3,13 +3,17 @@ package com.greidan.greidan.greidan;
 import android.content.ContentValues;
 import android.location.Location;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Daníel on 01/03/2016.
@@ -76,6 +80,19 @@ public class Ad implements Serializable {
 
         return values;
     }
+
+    public ArrayList<NameValuePair> getRequestParams() {
+        ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
+        requestParams.add(new BasicNameValuePair("title", title));
+        requestParams.add(new BasicNameValuePair("content", content));
+        requestParams.add(new BasicNameValuePair("category", category));
+        requestParams.add(new BasicNameValuePair("author_id", Integer.toString(author.getId())));
+        requestParams.add(new BasicNameValuePair("lat", Double.toString(location.getLatitude())));
+        requestParams.add(new BasicNameValuePair("lng", Double.toString(location.getLongitude())));
+
+        return requestParams;
+    }
+
 
     public int getId() {
         return id;

@@ -4,18 +4,13 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by Daníel on 01/03/2016.
- */
 public class DbHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "greidan.db";
 
-
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {

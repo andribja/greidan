@@ -24,7 +24,7 @@ public class UserManager {
     public UserManager(Activity activity) {
         this.activity = activity;
         if(activity != null) {
-            prefs = activity.getSharedPreferences("AppPref", activity.MODE_PRIVATE);
+            prefs = activity.getSharedPreferences("AppPref", Activity.MODE_PRIVATE);
         }
     }
 
@@ -41,6 +41,7 @@ public class UserManager {
     }
 
     public void logout() {
+        //TODO: Invalidate session on server also?
         prefs.edit().putString("token", "").apply();
     }
 
@@ -55,19 +56,19 @@ public class UserManager {
     }
 
     public boolean isLoggedIn() {
-        // TODO: Invalidate session on server also
+        // TODO: Is this good enough?
         String token = prefs.getString("token", "");
         Log.i("UserManager", token);
         return !token.equals("");
     }
 
     public User findUserByUsername(String username) {
-        // TODO: query database or contact server to find user
+        // TODO: Implement this; query database or contact server to find user
         return new User(0, username, null);
     }
 
     public User findUserById(int id) {
-
+        // TODO: Implement this: query database or contact server to find user
         return new User(id, "username", null);
     }
 

@@ -52,7 +52,6 @@ public class RegisterActivity extends ActionBarActivity implements LoaderCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("RegisterActivity", "New register activity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         setupActionBar();
@@ -105,7 +104,7 @@ public class RegisterActivity extends ActionBarActivity implements LoaderCallbac
     }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
+     * Attempts to register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
@@ -161,7 +160,7 @@ public class RegisterActivity extends ActionBarActivity implements LoaderCallbac
         }
     }
 
-    //
+
     public void doAfterRegisterAttempt(boolean success, String message) {
         if(success) {
             finish();

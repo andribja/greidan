@@ -10,16 +10,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-/**
- * Created by Daníel on 01/03/2016.
- */
 public class Ad implements Parcelable {
 
     long id;
@@ -48,24 +41,15 @@ public class Ad implements Parcelable {
     public Ad(JSONObject jsonAd) throws JSONException, ParseException {
         UserManager userManager = new UserManager(null);
 
-        //String timePostedStr = jsonAd.getString("timePosted");
-        //DateFormat df = DateFormat.getDateInstance();
-        //Date timePosted = df.parse(timePostedStr);
-        Date timeposted = new Date();
-
-        String address = jsonAd.getString("address");
-        double lat = jsonAd.getDouble("lat");
-        double lng = jsonAd.getDouble("lng");
-
         this.id = jsonAd.getLong("id");
         this.title = jsonAd.getString("title");
         this.content = jsonAd.getString("content");
         this.category = jsonAd.getString("category");
         this.author = userManager.findUserById(jsonAd.getInt("author_id"));
-        this.timePosted = timePosted;
-        this.location = new Location(address);
-        this.location.setLatitude(lat);
-        this.location.setLongitude(lng);
+        this.timePosted = new Date(jsonAd.getLong("timePosted"));
+        this.location = new Location(jsonAd.getString("address"));
+        this.location.setLatitude(jsonAd.getDouble("lat"));
+        this.location.setLongitude(jsonAd.getDouble("lng"));
     }
 
     public ContentValues getContentValues() {
@@ -84,7 +68,7 @@ public class Ad implements Parcelable {
         return values;
     }
 
-    public ArrayList<NameValuePair> getRequestParams() {
+    public ArrayList<NameValuePair> getAsRequestParams() {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("title", title));
         requestParams.add(new BasicNameValuePair("content", content));
@@ -96,6 +80,57 @@ public class Ad implements Parcelable {
         return requestParams;
     }
 
+
+    /* Implement Parcelable */
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(category);
+        dest.writeInt(author.getId());
+        dest.writeString(timePosted.toString());
+        dest.writeDouble(location.getLatitude());
+        dest.writeDouble(location.getLongitude());
+    }
+
+    public Ad(Parcel in) throws ParseException {
+        UserManager userManager = new UserManager(null);
+
+        id = in.readLong();
+        title = in.readString();
+        content = in.readString();
+        category = in.readString();
+        author = userManager.findUserById(in.readInt());
+        timePosted = new Date(in.readLong());
+        location = new Location("");
+        location.setLatitude(in.readDouble());
+        location.setLongitude(in.readDouble());
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Ad createFromParcel(Parcel in) {
+            try {
+                return new Ad(in);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public Ad[] newArray(int size) {
+            return new Ad[size];
+        }
+    };
+
+    /* Getters and setters */
 
     public long getId() {
         return id;
@@ -152,58 +187,4 @@ public class Ad implements Parcelable {
     public void setLocation(Location location) {
         this.location = location;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
-        dest.writeString(title);
-        dest.writeString(content);
-        dest.writeString(category);
-        dest.writeInt(author.getId());
-        dest.writeString(timePosted.toString());
-        dest.writeDouble(location.getLatitude());
-        dest.writeDouble(location.getLongitude());
-    }
-
-    public Ad(Parcel in) throws ParseException {
-        UserManager userManager = new UserManager(null);
-
-        id = in.readLong();
-        title = in.readString();
-        content = in.readString();
-        category = in.readString();
-        author = userManager.findUserById(in.readInt());
-
-//        String timePostedStr = in.readString();
-//        DateFormat df = DateFormat.getDateInstance();
-//        timePosted = df.parse(timePostedStr);
-        timePosted = new Date();
-
-        double lat = in.readDouble();
-        double lng = in.readDouble();
-        location = new Location("");
-        location.setLatitude(lat);
-        location.setLongitude(lng);
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Ad createFromParcel(Parcel in) {
-            try {
-                return new Ad(in);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
-
-        public Ad[] newArray(int size) {
-            return new Ad[size];
-        }
-    };
 }

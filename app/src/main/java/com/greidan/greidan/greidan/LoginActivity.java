@@ -87,7 +87,7 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
 
     @Override
     public boolean onTouch(View v, MotionEvent e) {
-        // Start the register activity if user taps the link
+        // Start the register activity if user taps the register link
         if(e.getActionMasked() == MotionEvent.ACTION_UP && v.getId() == R.id.link_register) {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
@@ -119,9 +119,8 @@ public class LoginActivity extends ActionBarActivity implements LoaderCallbacks<
         getLoaderManager().initLoader(0, null, this);
     }
 
-
     /**
-     * Attempts to sign in or register the account specified by the login form.
+     * Attempts to sign in to the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */

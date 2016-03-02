@@ -2,9 +2,7 @@ package com.greidan.greidan.greidan;
 
 import java.io.Serializable;
 
-/**
- * Created by Daníel on 01/03/2016.
- */
+// TODO: implement Parcelable instead of Serializable
 public class User implements Serializable {
 
     int id;

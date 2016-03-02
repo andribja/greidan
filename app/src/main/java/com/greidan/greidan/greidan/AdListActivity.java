@@ -10,12 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +21,6 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
     AdManager adManager;
     ListView mListView;
 
-    //List<Ad> ads;
     HashMap<Long, Ad> ads;
 
     @Override
@@ -35,6 +31,7 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
 
         long id = (long) getIntent().getLongExtra("id", -1);
         Log.i("AdListActivity", "Got this from intent: " + id);
+
         adManager = new AdManager(this);
         adManager.fetchAds(0);
 
@@ -46,7 +43,6 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
         Log.i("AdListActivityListView", "You clicked Item: " + id + " at position:" + position + ", tag: " + v.getTag());
 
         Intent intent = new Intent(this, AdViewActivity.class);
-        //intent.putExtra("id", (int) v.getTag());
         Bundle bundle = new Bundle();
         bundle.putParcelable("ad", ads.get((int) v.getTag()));
         intent.putExtras(bundle);
@@ -54,7 +50,6 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
     }
 
     public void populateAdList(List<Ad> ads) {
-        //this.ads = ads;
         this.ads = new HashMap<>();
         for(Ad ad: ads) {
             this.ads.put(ad.getId(), ad);

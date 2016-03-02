@@ -20,7 +20,6 @@ public class NewAdActivity extends ActionBarActivity {
     EditText mTitle;
     EditText mContent;
     Spinner mCategory;
-
     Button mButtonPost;
     Button mButtonCancel;
 
@@ -66,6 +65,7 @@ public class NewAdActivity extends ActionBarActivity {
             intent.putExtras(bundle);
 
             startActivity(intent);
+            finish();
         }
     }
 

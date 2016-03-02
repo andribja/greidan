@@ -25,14 +25,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/new_ad_title"
                 android:layout_gravity="center_horizontal"
-                android:hint="Titill" />
+                android:hint="@string/prompt_ad_title" />
 
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/new_ad_category"
                 android:entries="@array/categories"
-                android:hint="Veldu flokk"/>
+                android:hint="@string/prompt_ad_category"/>
 
             <EditText
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:gravity="top"
                 android:id="@+id/new_ad_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="Efni" />
+                android:hint="@string/prompt_ad_content" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -55,7 +55,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Setja inn"
+                    android:text="@string/action_ad_post"
                     android:id="@+id/new_ad_button_post"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"/>
@@ -63,7 +63,7 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hætta við"
+                    android:text="@string/action_ad_cancel"
                     android:id="@+id/new_ad_button_cancel"
                     android:layout_weight="1"/>
             </LinearLayout>

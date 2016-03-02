@@ -46,7 +46,6 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        Log.i("MainActivityListView", "You clicked Item: " + id + " at position:" + position);
 
         Intent intent = new Intent(this, AdListActivity.class);
         intent.putExtra("id", id);

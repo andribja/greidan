@@ -21,9 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.jar.Attributes;
 
-/**
- * Created by Daníel on 01/03/2016.
- */
 public class AdManager {
 
     UserManager userManager;
@@ -31,8 +28,6 @@ public class AdManager {
 
     Activity activity;
 
-//    static String getadUrl = "http://10.0.2.2:8080/ads";
-//    static String postadUrl = "http://10.0.2.2:8080/postad";
     static String adUrl = "http://10.0.2.2:8080/ad";
 
     public AdManager(Activity activity) {
@@ -43,6 +38,7 @@ public class AdManager {
 
     public Ad fetchAd(int id) {
         // TODO: query db or server for data
+        // TODO: Properly implement
 
         /*
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -108,13 +104,14 @@ public class AdManager {
     }
 
     public void postAdToServer(Ad ad) {
-        ArrayList<NameValuePair> requestParams = ad.getRequestParams();
+        ArrayList<NameValuePair> requestParams = ad.getAsRequestParams();
         
         ServerTask task = new ServerTask(activity, adUrl, true, requestParams);
         task.execute();
     }
 
     public void fetchAds(int categoryId) {
+        // TODO: Properly implement
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("categoryId", Integer.toString(categoryId)));
 
@@ -123,28 +120,28 @@ public class AdManager {
     }
 
     private void handleRequestedData(JSONObject jObj) {
-        Log.i("AdManager", "handleRequestedData");
-
         ArrayList<Ad> ads = new ArrayList<Ad>();
-        Iterator<?> keys = jObj.keys();
 
-        while(keys.hasNext()) {
-            String key = (String) keys.next();
+        if(jObj != null) {
+            Iterator<?> keys = jObj.keys();
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
 
-            Ad ad;
-            try {
-                if(jObj.get(key) instanceof JSONObject) {
-                    // We've got a list of ads
-                    ad = new Ad((JSONObject) jObj.get(key));
-                    ads.add(ad);
-                } else {
-                    // We've got a single ad
-                    ad = new Ad(jObj);
-                    ((AdViewActivity) activity).populateAdView(ad);
-                    return;
+                Ad ad;
+                try {
+                    if (jObj.get(key) instanceof JSONObject) {
+                        // We've got a list of ads
+                        ad = new Ad((JSONObject) jObj.get(key));
+                        ads.add(ad);
+                    } else {
+                        // We've got a single ad
+                        ad = new Ad(jObj);
+                        ((AdViewActivity) activity).populateAdView(ad);
+                        return;
+                    }
+                } catch (JSONException | ParseException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException | ParseException e) {
-                e.printStackTrace();
             }
         }
 

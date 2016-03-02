@@ -1,8 +1,5 @@
 package com.greidan.greidan.greidan;
 
-/**
- * Created by Daníel on 01/03/2016.
- */
 public class DbSchema {
 
     public static final String CREATE_TABLE_ADS =
@@ -13,7 +10,7 @@ public class DbSchema {
                     AdTable.Cols.CATEGORY + " TEXT, " +
                     AdTable.Cols.AUTHOR_ID + " INTEGER, " +
                     AdTable.Cols.TIME_POSTED + " TEXT, " +
-                    AdTable.Cols.ADDRESS + " STRING, " +
+                    AdTable.Cols.ADDRESS + " TEXT, " +
                     AdTable.Cols.LAT + " INTEGER, " +
                     AdTable.Cols.LNG + " INTEGER)";
 

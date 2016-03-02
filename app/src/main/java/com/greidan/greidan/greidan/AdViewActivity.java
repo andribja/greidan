@@ -25,18 +25,12 @@ public class AdViewActivity extends ActionBarActivity {
         mAuthor = (TextView) findViewById(R.id.ad_view_author);
         mContent = (TextView) findViewById(R.id.ad_view_content);
 
-        Intent intent = getIntent();
-        if(intent.hasExtra("id")) {
-            int id = (int) getIntent().getIntExtra("id", -1);
-            adManager.fetchAd(id);
-        } else {
-            Bundle bundle = getIntent().getExtras();
-            Ad ad = (Ad) bundle.getSerializable("ad");
+        Bundle bundle = getIntent().getExtras();
+        Ad ad = (Ad) bundle.getParcelable("ad");
 
-            mTitle.setText(ad.getTitle());
-            mAuthor.setText(ad.getAuthor().getUsername());
-            mContent.setText(ad.getContent());
-        }
+        mTitle.setText(ad.getTitle());
+        mAuthor.setText(ad.getAuthor().getUsername());
+        mContent.setText(ad.getContent());
     }
 
     public void populateAdView(Ad ad) {

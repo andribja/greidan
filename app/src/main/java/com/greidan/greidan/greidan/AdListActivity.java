@@ -25,7 +25,7 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
     ListView mListView;
 
     //List<Ad> ads;
-    HashMap<Integer, Ad> ads;
+    HashMap<Long, Ad> ads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,20 +48,19 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
         Intent intent = new Intent(this, AdViewActivity.class);
         //intent.putExtra("id", (int) v.getTag());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("ad", ads.get((int) v.getTag()));
+        bundle.putParcelable("ad", ads.get((int) v.getTag()));
         intent.putExtras(bundle);
         startActivity(intent);
     }
 
     public void populateAdList(List<Ad> ads) {
         //this.ads = ads;
-        this.ads = new HashMap<Integer, Ad>();
+        this.ads = new HashMap<>();
         for(Ad ad: ads) {
             this.ads.put(ad.getId(), ad);
         }
 
         AdListAdapter arrayAdapter = new AdListAdapter(this, ads);
-
         mListView.setAdapter(arrayAdapter);
     }
 

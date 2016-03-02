@@ -23,7 +23,9 @@ public class UserManager {
 
     public UserManager(Activity activity) {
         this.activity = activity;
-        prefs = activity.getSharedPreferences("AppPref", activity.MODE_PRIVATE);
+        if(activity != null) {
+            prefs = activity.getSharedPreferences("AppPref", activity.MODE_PRIVATE);
+        }
     }
 
     public void register(String email, String password) {

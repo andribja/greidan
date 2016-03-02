@@ -2,6 +2,8 @@ package com.greidan.greidan.greidan;
 
 import android.content.ContentValues;
 import android.location.Location;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -18,9 +20,9 @@ import java.util.List;
 /**
  * Created by Daníel on 01/03/2016.
  */
-public class Ad implements Serializable {
+public class Ad implements Parcelable {
 
-    int id;
+    long id;
     String title;
     String content;
     String category;
@@ -32,7 +34,7 @@ public class Ad implements Serializable {
 
     }
 
-    public Ad(int id, String title, String content, String category, User author, Date timePosted, Location location) {
+    public Ad(long id, String title, String content, String category, User author, Date timePosted, Location location) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -46,15 +48,16 @@ public class Ad implements Serializable {
     public Ad(JSONObject jsonAd) throws JSONException, ParseException {
         UserManager userManager = new UserManager(null);
 
-        String timePostedStr = jsonAd.getString("timePosted");
-        DateFormat df = DateFormat.getDateInstance();
-        Date timePosted = df.parse(timePostedStr);
+        //String timePostedStr = jsonAd.getString("timePosted");
+        //DateFormat df = DateFormat.getDateInstance();
+        //Date timePosted = df.parse(timePostedStr);
+        Date timeposted = new Date();
 
         String address = jsonAd.getString("address");
         double lat = jsonAd.getDouble("lat");
         double lng = jsonAd.getDouble("lng");
 
-        this.id = jsonAd.getInt("id");
+        this.id = jsonAd.getLong("id");
         this.title = jsonAd.getString("title");
         this.content = jsonAd.getString("content");
         this.category = jsonAd.getString("category");
@@ -68,7 +71,7 @@ public class Ad implements Serializable {
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(DbSchema.AdTable.Cols.ID, Integer.toString(id));
+        values.put(DbSchema.AdTable.Cols.ID, Long.toString(id));
         values.put(DbSchema.AdTable.Cols.TITLE, title);
         values.put(DbSchema.AdTable.Cols.CONTENT, content);
         values.put(DbSchema.AdTable.Cols.CATEGORY, category);
@@ -94,7 +97,7 @@ public class Ad implements Serializable {
     }
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -122,7 +125,7 @@ public class Ad implements Serializable {
         return location;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -149,4 +152,58 @@ public class Ad implements Serializable {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeString(title);
+        dest.writeString(content);
+        dest.writeString(category);
+        dest.writeInt(author.getId());
+        dest.writeString(timePosted.toString());
+        dest.writeDouble(location.getLatitude());
+        dest.writeDouble(location.getLongitude());
+    }
+
+    public Ad(Parcel in) throws ParseException {
+        UserManager userManager = new UserManager(null);
+
+        id = in.readLong();
+        title = in.readString();
+        content = in.readString();
+        category = in.readString();
+        author = userManager.findUserById(in.readInt());
+
+//        String timePostedStr = in.readString();
+//        DateFormat df = DateFormat.getDateInstance();
+//        timePosted = df.parse(timePostedStr);
+        timePosted = new Date();
+
+        double lat = in.readDouble();
+        double lng = in.readDouble();
+        location = new Location("");
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Ad createFromParcel(Parcel in) {
+            try {
+                return new Ad(in);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        public Ad[] newArray(int size) {
+            return new Ad[size];
+        }
+    };
 }

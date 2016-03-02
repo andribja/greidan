@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.Date;
 
 public class NewAdActivity extends ActionBarActivity {
 
@@ -20,6 +23,8 @@ public class NewAdActivity extends ActionBarActivity {
 
     Button mButtonPost;
     Button mButtonCancel;
+
+    Ad newAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +46,27 @@ public class NewAdActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                adManager.postAdToServer(new Ad(0, title, content, category, new User(0, "foobar", "raboof"), null, new Location("foo")));
+                newAd = new Ad(-1, title, content, category, new User(0, "foobar", "raboof"), new Date(), new Location("foo"));
+                adManager.postAdToServer(newAd);
             }
         });
 
         mButtonCancel = (Button) findViewById(R.id.new_ad_button_cancel);
     }
 
-    public void doAfterPost(boolean success, String message, int id) {
+    public void doAfterPost(boolean success, String message, long id) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(this, AdViewActivity.class);
-        intent.putExtra("id", id);
+        if(success) {
+            newAd.setId(id);
 
+            Intent intent = new Intent(this, AdViewActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("ad", newAd);
+            intent.putExtras(bundle);
+
+            startActivity(intent);
+        }
     }
 
 }

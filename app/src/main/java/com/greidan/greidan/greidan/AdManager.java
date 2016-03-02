@@ -96,6 +96,17 @@ public class AdManager {
         return null;
     }
 
+    public void saveAd(Ad ad) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = ad.getContentValues();
+
+        long newRowId = db.insert(
+                DbSchema.AdTable.NAME,
+                null,
+                values
+        );
+    }
+
     public void postAdToServer(Ad ad) {
         ArrayList<NameValuePair> requestParams = ad.getRequestParams();
         
@@ -113,14 +124,6 @@ public class AdManager {
 
     private void handleRequestedData(JSONObject jObj) {
         Log.i("AdManager", "handleRequestedData");
-
-//        ArrayList<Ad> ads = new ArrayList<Ad>();
-//        Ad ad1 = new Ad(13, "foo", "bar", "baz", new User(0, "foobar", ""), null, null);
-//        Ad ad2 = new Ad(5, "bar", "baz", "foo", new User(1, "raboof", ""), null, null);
-//        ads.add(ad1);
-//        ads.add(ad2);
-//
-//        ((AdListActivity) activity).populateAdList(ads);
 
         ArrayList<Ad> ads = new ArrayList<Ad>();
         Iterator<?> keys = jObj.keys();
@@ -181,7 +184,7 @@ public class AdManager {
             // do something with the data
             Boolean success = false;
             String message = "";
-            int id = -1;
+            long id = -1;
 
             try { success = jObj.getBoolean("success"); }
             catch (JSONException | NullPointerException e) { e.printStackTrace(); }

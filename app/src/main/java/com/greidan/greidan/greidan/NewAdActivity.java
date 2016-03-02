@@ -1,6 +1,7 @@
 package com.greidan.greidan.greidan;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -40,7 +41,7 @@ public class NewAdActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                adManager.postAdToServer(new Ad(0, title, content, category, new User(0, "foobar", "raboof"), null, null));
+                adManager.postAdToServer(new Ad(0, title, content, category, new User(0, "foobar", "raboof"), null, new Location("foo")));
             }
         });
 

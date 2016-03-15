@@ -2,24 +2,19 @@ package com.greidan.greidan.greidan;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
+import android.os.Bundle;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.Attributes;
 
 public class AdManager {
 
@@ -28,12 +23,19 @@ public class AdManager {
 
     Activity activity;
 
-    static String adUrl = "http://10.0.2.2:8080/ad";
+    String adUrl;
 
     public AdManager(Activity activity) {
         this.activity = activity;
         userManager = new UserManager(activity);
         dbHelper = new DbHelper(activity);
+
+        if(activity != null) {
+            String host = activity.getString(R.string.host);
+            String port = activity.getString(R.string.port);
+
+            adUrl = host + ":" + port + "/ad";
+        }
     }
 
     public Ad fetchAd(int id) {
@@ -86,7 +88,7 @@ public class AdManager {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("id", Integer.toString(id)));
 
-        ServerTask task = new ServerTask(activity, adUrl, false, requestParams);
+        ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
         task.execute();
 
         return null;
@@ -106,7 +108,7 @@ public class AdManager {
     public void postAdToServer(Ad ad) {
         ArrayList<NameValuePair> requestParams = ad.getAsRequestParams();
         
-        ServerTask task = new ServerTask(activity, adUrl, true, requestParams);
+        ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, true, requestParams);
         task.execute();
     }
 
@@ -115,7 +117,7 @@ public class AdManager {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("categoryId", Integer.toString(categoryId)));
 
-        ServerTask task = new ServerTask(activity, adUrl, false, requestParams);
+        ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
         task.execute();
     }
 
@@ -134,10 +136,11 @@ public class AdManager {
                         ad = new Ad((JSONObject) jObj.get(key));
                         ads.add(ad);
                     } else {
-                        // We've got a single ad
-                        ad = new Ad(jObj);
-                        ((AdViewActivity) activity).populateAdView(ad);
-                        return;
+                        // TODO: do we need this if AdListActivity passes the ad directly to AdViewActivity?
+//                        // We've got a single ad
+//                        ad = new Ad(jObj);
+//                        ((AdViewActivity) activity).populateAdView(ad);
+//                        return;
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -150,12 +153,12 @@ public class AdManager {
 
     private class ServerTask extends AsyncTask<Void, Void, JSONObject> {
 
-        Activity activity;
+        ProgressActivity activity;
         List<NameValuePair> requestParams;
         String url;
         boolean post;
 
-        public ServerTask(Activity activity, String url, boolean post, List<NameValuePair> requestParams) {
+        public ServerTask(ProgressActivity activity, String url, boolean post, List<NameValuePair> requestParams) {
             this.activity = activity;
             this.requestParams = requestParams;
             this.url = url;
@@ -193,7 +196,11 @@ public class AdManager {
             catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
             if(post) {
-                ((NewAdActivity) activity).doAfterPost(success, message, id);
+                Bundle data = new Bundle();
+                data.putBoolean("success", success);
+                data.putString("message", message);
+                data.putLong("id", id);
+                activity.doUponCompletion(data);
             } else {
                 handleRequestedData(jObj);
             }

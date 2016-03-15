@@ -19,6 +19,8 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     UserManager userManager;
 
     Button mButtonNewPost;
+    View mContainerView;
+    View mProgressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,9 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 startActivity(intent);
             }
         });
+
+        mContainerView = findViewById(R.id.main_container);
+        mProgressView = findViewById(R.id.main_progress);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {

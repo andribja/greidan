@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-public class NewAdActivity extends ActionBarActivity {
+public class NewAdActivity extends ProgressActivity {
 
     AdManager adManager;
 
@@ -45,15 +45,31 @@ public class NewAdActivity extends ActionBarActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                newAd = new Ad(-1, title, content, category, new User(0, "foobar", "raboof"), new Date(), new Location("foo"));
-                adManager.postAdToServer(newAd);
+                attemptPostAd(title, content, category);
             }
         });
 
         mButtonCancel = (Button) findViewById(R.id.new_ad_button_cancel);
+
+        mContainerView = findViewById(R.id.new_ad_container);
+        mProgressView = findViewById(R.id.new_ad_progress);
     }
 
-    public void doAfterPost(boolean success, String message, long id) {
+    private void attemptPostAd(String title, String content, String category) {
+        // TODO: verify ad content before posting
+        // TODO: proper parameters in ad constructor
+
+        showProgress(true);
+        newAd = new Ad(-1, title, content, category, new User(0, "foobar", "raboof"), new Date(), new Location("foo"));
+        adManager.postAdToServer(newAd);
+    }
+
+    @Override
+    public void doUponCompletion(Bundle data) {
+        boolean success = data.getBoolean("success");
+        String message = data.getString("message");
+        long id = data.getLong("id");
+
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
         if(success) {
@@ -68,5 +84,4 @@ public class NewAdActivity extends ActionBarActivity {
             finish();
         }
     }
-
 }

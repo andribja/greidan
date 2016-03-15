@@ -3,6 +3,7 @@ package com.greidan.greidan.greidan;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 
 import org.apache.http.NameValuePair;
@@ -18,24 +19,29 @@ public class UserManager {
 
     SharedPreferences prefs;
     Activity activity;
-    static String loginUrl = "http://10.0.2.2:8080/login";
-    static String registerUrl = "http://10.0.2.2:8080/register";
+    String loginUrl;
+    String registerUrl;
 
     public UserManager(Activity activity) {
         this.activity = activity;
         if(activity != null) {
             prefs = activity.getSharedPreferences("AppPref", Activity.MODE_PRIVATE);
+
+            String host = activity.getString(R.string.host);
+            String port = activity.getString(R.string.port);
+            loginUrl = host + ":" + port + "/login";
+            registerUrl = host + ":" + port + "/register";
         }
     }
 
     public void register(String email, String password) {
-        AuthTask registerTask = new AuthTask(activity, email, password, registerUrl);
+        AuthTask registerTask = new AuthTask((ProgressActivity) activity, email, password, registerUrl);
 
         registerTask.execute();
     }
 
     public void login(String email, String password) {
-        AuthTask loginTask = new AuthTask(activity, email, password, loginUrl);
+        AuthTask loginTask = new AuthTask((ProgressActivity) activity, email, password, loginUrl);
 
         loginTask.execute();
     }
@@ -78,20 +84,14 @@ public class UserManager {
         String email;
         String password;
         String url;
-        LoginActivity loginActivity;
-        RegisterActivity registerActivity;
+        ProgressActivity activity;
 
-        public AuthTask(Activity activity, String email, String password, String url) {
+        public AuthTask(ProgressActivity activity, String email, String password, String url) {
             this.email = email;
             this.password = password;
             this.url = url;
 
-            try {
-                loginActivity = (LoginActivity) activity;
-            } catch (ClassCastException e) {
-                Log.i("UserManager", "Can not cast to LoginActivity");
-                registerActivity = (RegisterActivity) activity;
-            }
+            this.activity = activity;
         }
 
         @Override
@@ -124,20 +124,18 @@ public class UserManager {
                 }
             }
 
-            if(loginActivity != null) {
-                loginActivity.doAfterLoginAttempt(success, message);
-            } else {
-                registerActivity.doAfterRegisterAttempt(success, message);
-            }
+            Bundle data = new Bundle();
+            data.putBoolean("success", success);
+            data.putString("message", message);
+            activity.doUponCompletion(data);
         }
 
         @Override
         protected void onCancelled() {
-            if(loginActivity != null) {
-                loginActivity.doAfterLoginAttempt(false, "Unknown error");
-            } else {
-                registerActivity.doAfterRegisterAttempt(false, "Unknown error");
-            }
+            Bundle data = new Bundle();
+            data.putBoolean("success", false);
+            data.putString("message", "Error");
+            activity.doUponCompletion(data);
         }
     }
 }

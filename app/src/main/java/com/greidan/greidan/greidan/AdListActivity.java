@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class AdListActivity extends ProgressActivity implements AdapterView.OnItemClickListener {
 
     AdManager adManager;
     ListView mListView;
@@ -44,7 +44,7 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
 
         Intent intent = new Intent(this, AdViewActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("ad", ads.get((int) v.getTag()));
+        bundle.putParcelable("ad", ads.get((long) v.getTag()));
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -57,6 +57,15 @@ public class AdListActivity extends ActionBarActivity implements AdapterView.OnI
 
         AdListAdapter arrayAdapter = new AdListAdapter(this, ads);
         mListView.setAdapter(arrayAdapter);
+    }
+
+    @Override
+    public void doUponCompletion(Bundle data) {
+        List<Ad> ads = data.getParcelableArrayList("ads");
+
+        populateAdList(ads);
+
+        showProgress(false);
     }
 
     private class AdListAdapter extends ArrayAdapter<Ad> {

@@ -1,11 +1,17 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.manager;
 
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+
+import com.greidan.greidan.greidan.model.Ad;
+import com.greidan.greidan.greidan.DbHelper;
+import com.greidan.greidan.greidan.DbSchema;
+import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.ServerRequest;
+import com.greidan.greidan.greidan.activity.ProgressActivity;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -17,7 +23,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class AdManager {
 

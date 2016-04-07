@@ -1,4 +1,4 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

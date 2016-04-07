@@ -1,9 +1,8 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.greidan.greidan.greidan.model.Ad;
+import com.greidan.greidan.greidan.manager.AdManager;
+import com.greidan.greidan.greidan.R;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,15 +1,18 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.activity;
 
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.greidan.greidan.greidan.model.Ad;
+import com.greidan.greidan.greidan.manager.AdManager;
+import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.manager.UserManager;
 
 import java.util.Date;
 

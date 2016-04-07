@@ -1,10 +1,12 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.greidan.greidan.greidan.model.Ad;
+import com.greidan.greidan.greidan.manager.AdManager;
+import com.greidan.greidan.greidan.R;
 
 public class AdViewActivity extends ActionBarActivity {
 

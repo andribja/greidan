@@ -1,4 +1,4 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.manager;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -6,14 +6,17 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.ServerRequest;
+import com.greidan.greidan.greidan.model.User;
+import com.greidan.greidan.greidan.activity.ProgressActivity;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class UserManager {
 

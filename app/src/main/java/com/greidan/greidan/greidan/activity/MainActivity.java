@@ -1,18 +1,17 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import java.util.List;
+import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.manager.UserManager;
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 

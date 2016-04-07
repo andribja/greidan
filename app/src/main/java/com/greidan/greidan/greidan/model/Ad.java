@@ -1,9 +1,12 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.model;
 
 import android.content.ContentValues;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.greidan.greidan.greidan.DbSchema;
+import com.greidan.greidan.greidan.manager.UserManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

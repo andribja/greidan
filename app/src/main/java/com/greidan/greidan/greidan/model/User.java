@@ -1,4 +1,4 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.model;
 
 import java.io.Serializable;
 

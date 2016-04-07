@@ -62,7 +62,7 @@ public class NewAdActivity extends ProgressActivity {
         // TODO: proper parameters in ad constructor
 
         showProgress(true);
-        newAd = new Ad(-1, title, content, category, userManager.getLoggedInUsername(), new Date(), new Location("foo"));
+        newAd = new Ad("", title, content, category, userManager.getLoggedInUsername(), new Date(), new Location("foo"));
         adManager.postAdToServer(newAd);
     }
 
@@ -70,7 +70,7 @@ public class NewAdActivity extends ProgressActivity {
     public void doUponCompletion(Bundle data) {
         boolean success = data.getBoolean("success");
         String message = data.getString("message");
-        long id = data.getLong("id");
+        String id = data.getString("id");
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 

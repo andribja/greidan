@@ -7,6 +7,7 @@ import android.os.Parcelable;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 public class Ad implements Parcelable {
 
-    long id;
+    String id;
     String title;
     String content;
     String category;
@@ -27,7 +28,7 @@ public class Ad implements Parcelable {
 
     }
 
-    public Ad(long id, String title, String content, String category, String authorName, Date timePosted, Location location) {
+    public Ad(String id, String title, String content, String category, String authorName, Date timePosted, Location location) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -41,21 +42,23 @@ public class Ad implements Parcelable {
     public Ad(JSONObject jsonAd) throws JSONException, ParseException {
         UserManager userManager = new UserManager(null);
 
-        this.id = jsonAd.getLong("id");
+        this.id = jsonAd.getString("_id");
         this.title = jsonAd.getString("title");
         this.content = jsonAd.getString("content");
         this.category = jsonAd.getString("category");
-        this.authorName = jsonAd.getString("auhtorName");
+//        this.authorName = jsonAd.getString("authorName");
+        this.authorName = "temp_author";    // TODO: remove this once authorName is provided by server
         this.timePosted = new Date(jsonAd.getLong("timePosted"));
-        this.location = new Location(jsonAd.getString("address"));
-        this.location.setLatitude(jsonAd.getDouble("lat"));
-        this.location.setLongitude(jsonAd.getDouble("lng"));
+        this.location = new Location("temp_address");
+        JSONArray loc = jsonAd.getJSONArray("loc");
+        this.location.setLatitude(loc.getDouble(0));
+        this.location.setLongitude(loc.getDouble(0));
     }
 
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(DbSchema.AdTable.Cols.ID, Long.toString(id));
+        values.put(DbSchema.AdTable.Cols.ID, id);
         values.put(DbSchema.AdTable.Cols.TITLE, title);
         values.put(DbSchema.AdTable.Cols.CONTENT, content);
         values.put(DbSchema.AdTable.Cols.CATEGORY, category);
@@ -90,7 +93,7 @@ public class Ad implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeString(id);
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(category);
@@ -103,7 +106,7 @@ public class Ad implements Parcelable {
     public Ad(Parcel in) throws ParseException {
         UserManager userManager = new UserManager(null);
 
-        id = in.readLong();
+        id = in.readString();
         title = in.readString();
         content = in.readString();
         category = in.readString();
@@ -132,7 +135,7 @@ public class Ad implements Parcelable {
 
     /* Getters and setters */
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -160,7 +163,7 @@ public class Ad implements Parcelable {
         return location;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

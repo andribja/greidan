@@ -21,7 +21,7 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
     AdManager adManager;
     ListView mListView;
 
-    HashMap<Long, Ad> ads;
+    HashMap<String, Ad> ads;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
         Log.i("AdListActivity", "Got this from intent: " + id);
 
         adManager = new AdManager(this);
-        adManager.fetchAds("handverk");
+        adManager.fetchAds("Handverk");
 
         mListView = (ListView) findViewById(R.id.ad_list);
         mListView.setOnItemClickListener(this);
@@ -47,7 +47,8 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
 
         Intent intent = new Intent(this, AdViewActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelable("ad", ads.get((long) v.getTag()));
+        String adID = (String) v.getTag();
+        bundle.putParcelable("ad", ads.get(adID));
         intent.putExtras(bundle);
         startActivity(intent);
     }

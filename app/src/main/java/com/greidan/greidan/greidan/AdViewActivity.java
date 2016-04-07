@@ -27,8 +27,7 @@ public class AdViewActivity extends ActionBarActivity {
         Ad ad = (Ad) bundle.getParcelable("ad");
 
         mTitle.setText(ad.getTitle());
-//        mAuthor.setText(ad.getAuthor().getUsername());
-        mAuthor.setText("foobar");
+        mAuthor.setText(ad.getAuthorName());
         mContent.setText(ad.getContent());
     }
 }

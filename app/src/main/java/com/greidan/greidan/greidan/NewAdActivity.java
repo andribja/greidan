@@ -16,6 +16,7 @@ import java.util.Date;
 public class NewAdActivity extends ProgressActivity {
 
     AdManager adManager;
+    UserManager userManager;
 
     EditText mTitle;
     EditText mContent;
@@ -32,6 +33,7 @@ public class NewAdActivity extends ProgressActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         adManager = new AdManager(this);
+        userManager = new UserManager(this);
 
         mTitle = (EditText) findViewById(R.id.new_ad_title);
         mContent = (EditText) findViewById(R.id.new_ad_content);
@@ -60,7 +62,7 @@ public class NewAdActivity extends ProgressActivity {
         // TODO: proper parameters in ad constructor
 
         showProgress(true);
-        newAd = new Ad(-1, title, content, category, null, new Date(), new Location("foo"));
+        newAd = new Ad(-1, title, content, category, userManager.getLoggedInUsername(), new Date(), new Location("foo"));
         adManager.postAdToServer(newAd);
     }
 

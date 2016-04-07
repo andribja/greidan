@@ -72,14 +72,23 @@ public class UserManager {
         return prefs.getString("token", "");
     }
 
+    public User getLoggedInUser() {
+        // TODO: properly implement
+        return new User(1337, "temp_user", "temp@user.com");
+    }
+
+    public String getLoggedInUsername() {
+        return prefs.getString("username", "");
+    }
+
     public User findUserByUsername(String username) {
         // TODO: Implement this; query database or contact server to find user
         return new User(0, username, null);
     }
 
-    public User findUserById(int id) {
+    public User getUserById(int id) {
         // TODO: Implement this: query database or contact server to find user
-        return new User(id, "username", null);
+        return new User(id, "user_from_id", "userfrom@id.com");
     }
 
     // An async task that tries to authenticate the user against the server
@@ -122,7 +131,10 @@ public class UserManager {
             if(success) {
                 try {
                     String token = jObj.getString("token");
-                    prefs.edit().putString("token", token).apply();
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString("token", token);
+                    editor.putString("username", email);
+                    editor.apply();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

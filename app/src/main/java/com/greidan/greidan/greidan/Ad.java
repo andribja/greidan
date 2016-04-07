@@ -19,7 +19,7 @@ public class Ad implements Parcelable {
     String title;
     String content;
     String category;
-    User author;
+    String authorName;
     Date timePosted;
     Location location;
 
@@ -27,12 +27,12 @@ public class Ad implements Parcelable {
 
     }
 
-    public Ad(long id, String title, String content, String category, User author, Date timePosted, Location location) {
+    public Ad(long id, String title, String content, String category, String authorName, Date timePosted, Location location) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.category = category;
-        this.author = author;
+        this.authorName = authorName;
         this.timePosted = timePosted;
         this.category = category;
         this.location = location;
@@ -45,7 +45,7 @@ public class Ad implements Parcelable {
         this.title = jsonAd.getString("title");
         this.content = jsonAd.getString("content");
         this.category = jsonAd.getString("category");
-        this.author = userManager.findUserById(jsonAd.getInt("author_id"));
+        this.authorName = jsonAd.getString("auhtorName");
         this.timePosted = new Date(jsonAd.getLong("timePosted"));
         this.location = new Location(jsonAd.getString("address"));
         this.location.setLatitude(jsonAd.getDouble("lat"));
@@ -59,7 +59,7 @@ public class Ad implements Parcelable {
         values.put(DbSchema.AdTable.Cols.TITLE, title);
         values.put(DbSchema.AdTable.Cols.CONTENT, content);
         values.put(DbSchema.AdTable.Cols.CATEGORY, category);
-        values.put(DbSchema.AdTable.Cols.AUTHOR_ID, author.getId());
+        values.put(DbSchema.AdTable.Cols.AUTHOR_ID, authorName);
         values.put(DbSchema.AdTable.Cols.TIME_POSTED, timePosted.toString());
         values.put(DbSchema.AdTable.Cols.ADDRESS, location.getProvider());
         values.put(DbSchema.AdTable.Cols.LAT, location.getLatitude());
@@ -73,7 +73,7 @@ public class Ad implements Parcelable {
         requestParams.add(new BasicNameValuePair("title", title));
         requestParams.add(new BasicNameValuePair("content", content));
         requestParams.add(new BasicNameValuePair("category", category));
-//        requestParams.add(new BasicNameValuePair("author_id", Integer.toString(author.getId())));
+        requestParams.add(new BasicNameValuePair("authorName", authorName));
         requestParams.add(new BasicNameValuePair("lat", Double.toString(location.getLatitude())));
         requestParams.add(new BasicNameValuePair("lng", Double.toString(location.getLongitude())));
 
@@ -94,7 +94,7 @@ public class Ad implements Parcelable {
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(category);
-//        dest.writeInt(author.getId());
+        dest.writeString(authorName);
         dest.writeString(timePosted.toString());
         dest.writeDouble(location.getLatitude());
         dest.writeDouble(location.getLongitude());
@@ -107,7 +107,7 @@ public class Ad implements Parcelable {
         title = in.readString();
         content = in.readString();
         category = in.readString();
-//        author = userManager.findUserById(in.readInt());
+        authorName = in.readString();
         timePosted = new Date(in.readLong());
         location = new Location("");
         location.setLatitude(in.readDouble());
@@ -148,8 +148,8 @@ public class Ad implements Parcelable {
         return category;
     }
 
-    public User getAuthor() {
-        return author;
+    public String getAuthorName() {
+        return authorName;
     }
 
     public Date getTimePosted() {
@@ -176,8 +176,8 @@ public class Ad implements Parcelable {
         this.category = category;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public void setTimePosted(Date timePosted) {

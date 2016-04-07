@@ -5,9 +5,11 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +17,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class AdManager {
 
@@ -130,15 +133,15 @@ public class AdManager {
             while (keys.hasNext()) {
                 String key = (String) keys.next();
 
-                Ad ad;
-                try {
-                    if (jObj.get(key) instanceof JSONObject) {
-                        // We've got a list of ads
-                        ad = new Ad((JSONObject) jObj.get(key));
-                        ads.add(ad);
+                if(key.equals("adlist")) {
+                    try {
+                        JSONArray jArr = jObj.getJSONArray(key);
+                        for(int i=0; i<jArr.length(); i++) {
+                            ads.add(new Ad(jArr.getJSONObject(i)));
+                        }
+                    } catch (JSONException | ParseException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException | ParseException e) {
-                    e.printStackTrace();
                 }
             }
         }
@@ -177,21 +180,20 @@ public class AdManager {
         @Override
         protected void onPostExecute(JSONObject jObj) {
 
-            // do something with the data
-            Boolean success = false;
-            String message = "";
-            long id = -1;
-
-            try { success = jObj.getBoolean("success"); }
-            catch (JSONException | NullPointerException e) { e.printStackTrace(); }
-
-            try { message = jObj.getString("response"); }
-            catch (JSONException | NullPointerException e) { e.printStackTrace(); }
-
-            try { id = jObj.getInt("id"); }
-            catch (JSONException | NullPointerException e) { e.printStackTrace(); }
-
             if(post) {
+                Boolean success = false;
+                String message = "";
+                long id = -1;
+
+                try { id = jObj.getInt("_id"); }
+                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
+                try { success = jObj.getBoolean("success"); }
+                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
+                try { message = jObj.getString("response"); }
+                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
                 Bundle data = new Bundle();
                 data.putBoolean("success", success);
                 data.putString("message", message);

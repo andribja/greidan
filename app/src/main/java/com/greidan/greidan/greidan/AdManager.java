@@ -107,15 +107,16 @@ public class AdManager {
 
     public void postAdToServer(Ad ad) {
         ArrayList<NameValuePair> requestParams = ad.getAsRequestParams();
+        requestParams.add(new BasicNameValuePair("token", userManager.getToken()));
         
         ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, true, requestParams);
         task.execute();
     }
 
-    public void fetchAds(int categoryId) {
+    public void fetchAds(String category) {
         // TODO: Properly implement
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-        requestParams.add(new BasicNameValuePair("categoryId", Integer.toString(categoryId)));
+        requestParams.add(new BasicNameValuePair("category", category));
 
         ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
         task.execute();
@@ -135,12 +136,6 @@ public class AdManager {
                         // We've got a list of ads
                         ad = new Ad((JSONObject) jObj.get(key));
                         ads.add(ad);
-                    } else {
-                        // TODO: do we need this if AdListActivity passes the ad directly to AdViewActivity?
-//                        // We've got a single ad
-//                        ad = new Ad(jObj);
-//                        ((AdViewActivity) activity).populateAdView(ad);
-//                        return;
                     }
                 } catch (JSONException | ParseException e) {
                     e.printStackTrace();
@@ -148,7 +143,9 @@ public class AdManager {
             }
         }
 
-        ((AdListActivity) activity).populateAdList(ads);
+        Bundle data = new Bundle();
+        data.putParcelableArrayList("ads", ads);
+        ((ProgressActivity) activity).doUponCompletion(data);
     }
 
     private class ServerTask extends AsyncTask<Void, Void, JSONObject> {
@@ -179,7 +176,6 @@ public class AdManager {
 
         @Override
         protected void onPostExecute(JSONObject jObj) {
-            // remove loading animation
 
             // do something with the data
             Boolean success = false;

@@ -68,6 +68,10 @@ public class UserManager {
         return !token.equals("");
     }
 
+    public String getToken() {
+        return prefs.getString("token", "");
+    }
+
     public User findUserByUsername(String username) {
         // TODO: Implement this; query database or contact server to find user
         return new User(0, username, null);

@@ -73,7 +73,7 @@ public class Ad implements Parcelable {
         requestParams.add(new BasicNameValuePair("title", title));
         requestParams.add(new BasicNameValuePair("content", content));
         requestParams.add(new BasicNameValuePair("category", category));
-        requestParams.add(new BasicNameValuePair("author_id", Integer.toString(author.getId())));
+//        requestParams.add(new BasicNameValuePair("author_id", Integer.toString(author.getId())));
         requestParams.add(new BasicNameValuePair("lat", Double.toString(location.getLatitude())));
         requestParams.add(new BasicNameValuePair("lng", Double.toString(location.getLongitude())));
 
@@ -94,7 +94,7 @@ public class Ad implements Parcelable {
         dest.writeString(title);
         dest.writeString(content);
         dest.writeString(category);
-        dest.writeInt(author.getId());
+//        dest.writeInt(author.getId());
         dest.writeString(timePosted.toString());
         dest.writeDouble(location.getLatitude());
         dest.writeDouble(location.getLongitude());
@@ -107,7 +107,7 @@ public class Ad implements Parcelable {
         title = in.readString();
         content = in.readString();
         category = in.readString();
-        author = userManager.findUserById(in.readInt());
+//        author = userManager.findUserById(in.readInt());
         timePosted = new Date(in.readLong());
         location = new Location("");
         location.setLatitude(in.readDouble());

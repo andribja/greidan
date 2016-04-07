@@ -60,7 +60,7 @@ public class NewAdActivity extends ProgressActivity {
         // TODO: proper parameters in ad constructor
 
         showProgress(true);
-        newAd = new Ad(-1, title, content, category, new User(0, "foobar", "raboof"), new Date(), new Location("foo"));
+        newAd = new Ad(-1, title, content, category, null, new Date(), new Location("foo"));
         adManager.postAdToServer(newAd);
     }
 

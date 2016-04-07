@@ -33,10 +33,13 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
         Log.i("AdListActivity", "Got this from intent: " + id);
 
         adManager = new AdManager(this);
-        adManager.fetchAds(0);
+        adManager.fetchAds("handverk");
 
         mListView = (ListView) findViewById(R.id.ad_list);
         mListView.setOnItemClickListener(this);
+
+        mContainerView = findViewById(R.id.ad_list);
+        mProgressView = findViewById(R.id.ad_list_progress);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
@@ -49,7 +52,7 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
         startActivity(intent);
     }
 
-    public void populateAdList(List<Ad> ads) {
+    private void populateAdList(List<Ad> ads) {
         this.ads = new HashMap<>();
         for(Ad ad: ads) {
             this.ads.put(ad.getId(), ad);

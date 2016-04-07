@@ -26,9 +26,8 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/listView_main"
-            android:layout_gravity="center_horizontal"
-            android:entries="@array/categories" />
+            android:id="@+id/main_categories"
+            android:layout_gravity="center_horizontal" />
     </LinearLayout>
 
     <LinearLayout

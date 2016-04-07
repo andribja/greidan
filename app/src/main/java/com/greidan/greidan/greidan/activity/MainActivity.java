@@ -2,39 +2,49 @@ package com.greidan.greidan.greidan.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.manager.AdManager;
 import com.greidan.greidan.greidan.manager.UserManager;
 
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+import java.util.List;
 
+public class MainActivity extends ProgressActivity implements AdapterView.OnItemClickListener {
+
+    AdManager adManager;
     UserManager userManager;
 
     Button mButtonNewPost;
-    View mContainerView;
-    View mProgressView;
+    ListView mCategoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        adManager = new AdManager(this);
         userManager = new UserManager(this);
+
+        mCategoryList = (ListView) findViewById(R.id.main_categories);
+        mCategoryList.setOnItemClickListener(this);
+
+        mContainerView = findViewById(R.id.main_container);
+        mProgressView = findViewById(R.id.main_progress);
+
+        //showProgress(true);
+        adManager.fetchCategories();
 
         if(!userManager.isLoggedIn()) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }
-
-        ListView listView = (ListView) findViewById(R.id.listView_main);
-        listView.setOnItemClickListener(this);
 
         mButtonNewPost = (Button) findViewById(R.id.button_new_post);
         mButtonNewPost.setOnClickListener(new View.OnClickListener() {
@@ -44,16 +54,24 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 startActivity(intent);
             }
         });
-
-        mContainerView = findViewById(R.id.main_container);
-        mProgressView = findViewById(R.id.main_progress);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 
+        String category = (String) ((ListView) v.getParent()).getItemAtPosition(position);
+
         Intent intent = new Intent(this, AdListActivity.class);
-        intent.putExtra("id", id);
+        intent.putExtra("category", category);
         startActivity(intent);
+    }
+
+    @Override
+    public void doUponCompletion(Bundle data) {
+        List<String> categories = (List<String>)data.getSerializable("categories");
+
+        mCategoryList.setAdapter(new ArrayAdapter<String>(this, R.layout.list_item_basic, categories));
+
+        showProgress(false);
     }
 
     @Override

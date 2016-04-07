@@ -130,6 +130,20 @@ public class AdManager {
         task.execute();
     }
 
+    public void fetchCategories() {
+        // TODO: properly implement
+        ArrayList<String> categories = new ArrayList<>();
+        categories.add("Handverk");
+        categories.add("Skutl");
+        categories.add("Lán á tólum");
+        categories.add("Forritun");
+        categories.add("Annað");
+
+        Bundle data = new Bundle();
+        data.putSerializable("categories", categories);
+        ((ProgressActivity) activity).doUponCompletion(data);
+    }
+
     private void handleRequestedData(JSONObject jObj) {
         ArrayList<Ad> ads = new ArrayList<Ad>();
 

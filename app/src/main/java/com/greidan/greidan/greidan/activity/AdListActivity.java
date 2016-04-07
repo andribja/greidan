@@ -32,11 +32,10 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
         setContentView(R.layout.activity_ad_list);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        long id = (long) getIntent().getLongExtra("id", -1);
-        Log.i("AdListActivity", "Got this from intent: " + id);
+        String category = getIntent().getStringExtra("category");
 
         adManager = new AdManager(this);
-        adManager.fetchAds("Handverk");
+        adManager.fetchAds(category);
 
         mListView = (ListView) findViewById(R.id.ad_list);
         mListView.setOnItemClickListener(this);
@@ -86,7 +85,7 @@ public class AdListActivity extends ProgressActivity implements AdapterView.OnIt
             Ad ad = getItem(position);
 
             if(convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(R.layout.ad_list_item, parent, false);
+                convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_basic, parent, false);
             }
 
             TextView title = (TextView) convertView.findViewById(R.id.ad_list_item_title);

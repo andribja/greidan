@@ -49,8 +49,7 @@ public class Ad implements Parcelable {
         this.title = jsonAd.getString("title");
         this.content = jsonAd.getString("content");
         this.category = jsonAd.getString("category");
-//        this.authorName = jsonAd.getString("authorName");
-        this.authorName = "temp_author";    // TODO: remove this once authorName is provided by server
+        this.authorName = jsonAd.getString("author_name");
         this.timePosted = new Date(jsonAd.getLong("timePosted"));
         this.location = new Location("temp_address");
         JSONArray loc = jsonAd.getJSONArray("loc");

@@ -35,6 +35,7 @@ public class RegisterActivity extends ProgressActivity implements LoaderCallback
     UserManager userManager;
 
     // UI references.
+    private EditText mUsernameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private EditText mConfirmView;
@@ -48,6 +49,7 @@ public class RegisterActivity extends ProgressActivity implements LoaderCallback
         userManager = new UserManager(RegisterActivity.this);
 
         // Set up the login form.
+        mUsernameView = (EditText) findViewById(R.id.register_username);
         mEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
         populateAutoComplete();
 
@@ -88,11 +90,13 @@ public class RegisterActivity extends ProgressActivity implements LoaderCallback
      */
     private void attemptRegister() {
         // Reset errors.
+        mUsernameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
         mConfirmView.setError(null);
 
         // Store values at the time of the login attempt.
+        String username = mUsernameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
         String confirm = mConfirmView.getText().toString();
@@ -111,6 +115,13 @@ public class RegisterActivity extends ProgressActivity implements LoaderCallback
         if (!TextUtils.isEmpty(password) && !UserManager.isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
+            cancel = true;
+        }
+
+        // Check for a valid username
+        if(!UserManager.isUsernameValid(username)) {
+            mUsernameView.setError("ups");
+            focusView = mUsernameView;
             cancel = true;
         }
 
@@ -134,7 +145,7 @@ public class RegisterActivity extends ProgressActivity implements LoaderCallback
             // perform the user login attempt.
             showProgress(true);
 
-            userManager.register(email, password);
+            userManager.register(username, email, password);
         }
     }
 

@@ -37,14 +37,14 @@ public class UserManager {
         }
     }
 
-    public void register(String email, String password) {
-        AuthTask registerTask = new AuthTask((ProgressActivity) activity, email, password, registerUrl);
+    public void register(String username, String email, String password) {
+        AuthTask registerTask = new AuthTask((ProgressActivity) activity, username, email, password, registerUrl);
 
         registerTask.execute();
     }
 
-    public void login(String email, String password) {
-        AuthTask loginTask = new AuthTask((ProgressActivity) activity, email, password, loginUrl);
+    public void login(String username, String password) {
+        AuthTask loginTask = new AuthTask((ProgressActivity) activity, username, null, password, loginUrl);
 
         loginTask.execute();
     }
@@ -52,6 +52,11 @@ public class UserManager {
     public void logout() {
         //TODO: Invalidate session on server also?
         prefs.edit().putString("token", "").apply();
+    }
+
+    public static boolean isUsernameValid(String username) {
+        // TODO: properly implement
+        return username.length() >= 3;
     }
 
     public static boolean isEmailValid(String email) {
@@ -97,12 +102,14 @@ public class UserManager {
     // An async task that tries to authenticate the user against the server
     private class AuthTask extends AsyncTask<Void, Void, JSONObject> {
 
+        String username;
         String email;
         String password;
         String url;
         ProgressActivity activity;
 
-        public AuthTask(ProgressActivity activity, String email, String password, String url) {
+        public AuthTask(ProgressActivity activity, String username, String email, String password, String url) {
+            this.username = username;
             this.email = email;
             this.password = password;
             this.url = url;
@@ -113,6 +120,7 @@ public class UserManager {
         @Override
         protected JSONObject doInBackground(Void... params) {
             ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
+            requestParams.add(new BasicNameValuePair("username", username));
             requestParams.add(new BasicNameValuePair("email", email));
             requestParams.add(new BasicNameValuePair("password", password));
 
@@ -136,7 +144,7 @@ public class UserManager {
                     String token = jObj.getString("token");
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putString("token", token);
-                    editor.putString("username", email);
+                    editor.putString("username", username);
                     editor.apply();
                 } catch (JSONException e) {
                     e.printStackTrace();

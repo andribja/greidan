@@ -21,6 +21,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+    <string name="prompt_username">Username</string>
     <string name="prompt_password">Password</string>
     <string name="confirm_password">Password (confirm)</string>
     <string name="action_sign_in">Skrá inn</string>

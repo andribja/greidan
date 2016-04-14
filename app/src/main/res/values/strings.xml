@@ -47,6 +47,8 @@
 
     <string name="action_logout">Log out</string>
 
+    <string name="radius">Radius</string>
+
     <string name="title_activity_ad_list">Auglýsingar</string>
     <string name="title_activity_new_ad">Ný auglýsing</string>
     <string name="title_activity_register">Register</string>

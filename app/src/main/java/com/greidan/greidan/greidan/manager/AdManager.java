@@ -3,8 +3,10 @@ package com.greidan.greidan.greidan.manager;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.DbHelper;
@@ -121,10 +123,20 @@ public class AdManager {
         task.execute();
     }
 
-    public void fetchAds(String category) {
-        // TODO: Properly implement
+    public void fetchAds(String category, Location location, double radius) {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("category", category));
+        requestParams.add(new BasicNameValuePair("maxDistance", Double.toString(radius)));
+
+        if(location != null) {
+            double lat = location.getLatitude();
+            double lng = location.getLongitude();
+
+            Log.i("AdManager", "Location: " + lat + ", " + lng);
+
+            requestParams.add(new BasicNameValuePair("lat", Double.toString(lat)));
+            requestParams.add(new BasicNameValuePair("lng", Double.toString(lng)));
+        }
 
         ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
         task.execute();
@@ -202,9 +214,9 @@ public class AdManager {
             if(post) {
                 Boolean success = false;
                 String message = "";
-                long id = -1;
+                String id = "";
 
-                try { id = jObj.getInt("_id"); }
+                try { id = jObj.getString("_id"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
                 try { success = jObj.getBoolean("success"); }
@@ -216,7 +228,7 @@ public class AdManager {
                 Bundle data = new Bundle();
                 data.putBoolean("success", success);
                 data.putString("message", message);
-                data.putLong("id", id);
+                data.putString("id", id);
                 activity.doUponCompletion(data);
             } else {
                 handleRequestedData(jObj);

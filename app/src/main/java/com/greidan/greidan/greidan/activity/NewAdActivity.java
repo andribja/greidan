@@ -3,12 +3,16 @@ package com.greidan.greidan.greidan.activity;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.manager.AdManager;
 import com.greidan.greidan.greidan.R;
@@ -16,10 +20,15 @@ import com.greidan.greidan.greidan.manager.UserManager;
 
 import java.util.Date;
 
-public class NewAdActivity extends ProgressActivity {
+public class NewAdActivity extends LocationActivity {
 
-    AdManager adManager;
-    UserManager userManager;
+    private static final int MIN_ACCURACY = 20;
+    private static final int MIN_FRESHNESS = 60*60*1000;
+    private static final int UPDATE_INTERVAL = 3000;
+    private static final int MIN_UPDATE_INTERVAL = 1000;
+
+    AdManager mAdManager;
+    UserManager mUserManager;
 
     EditText mTitle;
     EditText mContent;
@@ -35,8 +44,19 @@ public class NewAdActivity extends ProgressActivity {
         setContentView(R.layout.activity_new_ad);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        adManager = new AdManager(this);
-        userManager = new UserManager(this);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(MIN_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mAdManager = new AdManager(this);
+        mUserManager = new UserManager(this);
 
         mTitle = (EditText) findViewById(R.id.new_ad_title);
         mContent = (EditText) findViewById(R.id.new_ad_content);
@@ -50,7 +70,7 @@ public class NewAdActivity extends ProgressActivity {
                 String content = mContent.getText().toString();
                 String category = mCategory.getSelectedItem().toString();
 
-                attemptPostAd(title, content, category);
+                attemptPostAd(title, content, category, mCurrentLocation);
             }
         });
 
@@ -60,13 +80,12 @@ public class NewAdActivity extends ProgressActivity {
         mProgressView = findViewById(R.id.new_ad_progress);
     }
 
-    private void attemptPostAd(String title, String content, String category) {
+    private void attemptPostAd(String title, String content, String category, Location location) {
         // TODO: verify ad content before posting
-        // TODO: proper parameters in ad constructor
 
         showProgress(true);
-        newAd = new Ad("", title, content, category, userManager.getLoggedInUsername(), new Date(), new Location("foo"));
-        adManager.postAdToServer(newAd);
+        newAd = new Ad("", title, content, category, mUserManager.getLoggedInUsername(), new Date(), location);
+        mAdManager.postAdToServer(newAd);
     }
 
     @Override
@@ -87,6 +106,20 @@ public class NewAdActivity extends ProgressActivity {
 
             startActivity(intent);
             finish();
+        }
+    }
+
+    @Override
+    protected void handleLocationUpdate() {
+        float accuracy = mCurrentLocation.getAccuracy();
+        long freshness = System.currentTimeMillis() - mCurrentLocation.getTime();
+
+        if(accuracy < MIN_ACCURACY && freshness < MIN_FRESHNESS) {
+            Log.i("NewAdActivity", "Got a nice location: " + mCurrentLocation.toString());
+            stopLocationUpdates();
+        } else {
+            Log.i("NewAdActivity", "Looking for a better location than " + mCurrentLocation.toString());
+            startLocationUpdates();
         }
     }
 }

@@ -32,7 +32,7 @@ public class ServerRequest {
     }
 
     public JSONObject getFromUrl(String url, List<NameValuePair> params) {
-        String encodedUrl = url + "/?" + URLEncodedUtils.format(params, "iso-8859-1");
+        String encodedUrl = url + "/?" + URLEncodedUtils.format(params, "utf-8");
         HttpGet httpGet = new HttpGet(encodedUrl);
 
         return executeRequest(httpGet);
@@ -41,7 +41,7 @@ public class ServerRequest {
     public JSONObject postToUrl(String url, List<NameValuePair> params) {
         HttpPost httpPost = new HttpPost(url);
         try {
-            httpPost.setEntity(new UrlEncodedFormEntity(params));
+            httpPost.setEntity(new UrlEncodedFormEntity(params, "utf-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

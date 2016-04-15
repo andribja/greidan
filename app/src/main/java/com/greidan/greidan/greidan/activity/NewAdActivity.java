@@ -110,7 +110,9 @@ public class NewAdActivity extends LocationActivity {
     }
 
     @Override
-    protected void handleLocationUpdate() {
+    public void onLocationChanged(Location location) {
+        super.onLocationChanged(location);
+
         float accuracy = mCurrentLocation.getAccuracy();
         long freshness = System.currentTimeMillis() - mCurrentLocation.getTime();
 

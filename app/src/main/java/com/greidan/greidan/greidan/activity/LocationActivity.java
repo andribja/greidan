@@ -15,6 +15,8 @@ public abstract class LocationActivity extends ProgressActivity implements
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
+    private static final String TAG = "LocationActivity";
+
     protected GoogleApiClient mGoogleApiClient;
     protected Location mCurrentLocation;
     protected LocationRequest mLocationRequest;
@@ -51,15 +53,13 @@ public abstract class LocationActivity extends ProgressActivity implements
 
     @Override
     public void onLocationChanged(Location location) {
-        Log.i("LocationActivity", "New location: " + location.toString());
+        Log.i(TAG, "New location: " + location.toString());
         mCurrentLocation = location;
-        handleLocationUpdate();
     }
 
     @Override
     public void onConnected(Bundle bundle) {
         mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        handleLocationUpdate();
     }
 
     @Override
@@ -68,7 +68,12 @@ public abstract class LocationActivity extends ProgressActivity implements
     }
 
     protected void onStart() {
-        mGoogleApiClient.connect();
+        Log.i(TAG, "onStart");
+        if(!mGoogleApiClient.isConnected()) {
+            Log.i(TAG, "Connecting to Google API");
+            mGoogleApiClient.connect();
+        }
+
         super.onStart();
     }
 
@@ -76,6 +81,4 @@ public abstract class LocationActivity extends ProgressActivity implements
         mGoogleApiClient.disconnect();
         super.onStop();
     }
-
-    protected abstract void handleLocationUpdate();
 }

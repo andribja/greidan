@@ -37,29 +37,33 @@
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/ad_list_progress"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="false">
+            android:layout_alignParentStart="false"
+            android:id="@+id/ad_list_container">
 
-            <ProgressBar
-                android:id="@+id/ad_list_progress"
-                style="?android:attr/progressBarStyleLarge"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:visibility="gone"
-                android:layout_gravity="center_horizontal" />
+                android:text=""
+                android:id="@+id/ad_list_range_label" />
 
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ad_list"
-                android:layout_alignParentTop="false"
-                android:layout_alignStart="@+id/ad_list_progress"
-                android:layout_alignParentBottom="true" />
+                android:id="@+id/ad_list" />
         </LinearLayout>
     </LinearLayout>
 

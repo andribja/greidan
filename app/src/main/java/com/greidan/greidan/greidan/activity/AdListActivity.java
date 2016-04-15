@@ -2,6 +2,7 @@ package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,22 +26,27 @@ import com.greidan.greidan.greidan.R;
 import java.util.HashMap;
 import java.util.List;
 
-public class AdListActivity extends LocationActivity implements AdapterView.OnItemClickListener{
+public class AdListActivity extends LocationActivity {
+
+    private static final String TAG = "AdListActivity";
 
     private static final int MIN_ACCURACY = 20;
     private static final int UPDATE_TIMEOUT = 10000;
     private static final int MIN_FRESHNESS = 60*60*1000;
     private static final int UPDATE_INTERVAL = 3000;
     private static final int MIN_UPDATE_INTERVAL = 1000;
+    private static final int DEFAULT_SEEK = 30;
 
     AdManager mAdManager;
     ListView mListView;
     SeekBar mRadiusSeek;
+    TextView mRangeLabel;
 
     HashMap<String, Ad> ads;
 
     String mCategory;
     double mRadius;
+    long mLastRefreshTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +66,17 @@ public class AdListActivity extends LocationActivity implements AdapterView.OnIt
         mLocationRequest.setFastestInterval(MIN_UPDATE_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        mContainerView = findViewById(R.id.ad_list);
+        mContainerView = findViewById(R.id.ad_list_container);
         mProgressView = findViewById(R.id.ad_list_progress);
 
         mAdManager = new AdManager(this);
-
-        mListView = (ListView) findViewById(R.id.ad_list);
-        mListView.setOnItemClickListener(this);
 
         mRadiusSeek = (SeekBar) findViewById(R.id.ad_list_radius_seek);
         mRadiusSeek.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mRadius = Math.exp(progress/1.0);
+                Log.i(TAG, "New seekbar value " + progress);
+                mRadius = 0.1 * Math.exp(progress/10.0);
             }
 
             @Override
@@ -82,25 +86,38 @@ public class AdListActivity extends LocationActivity implements AdapterView.OnIt
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                showProgress(true);
                 refresh();
             }
         });
 
-        mCategory = getIntent().getStringExtra("category");
-        mRadius = 100;
-    }
+        mRangeLabel = (TextView) findViewById(R.id.ad_list_range_label);
 
-    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        Intent intent = new Intent(this, AdViewActivity.class);
-        Bundle bundle = new Bundle();
-        String adID = (String) v.getTag();
-        bundle.putParcelable("ad", ads.get(adID));
-        intent.putExtras(bundle);
-        startActivity(intent);
+        mListView = (ListView) findViewById(R.id.ad_list);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(AdListActivity.this, AdViewActivity.class);
+                Bundle bundle = new Bundle();
+                String adID = (String) view.getTag();
+                bundle.putParcelable("ad", ads.get(adID));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        mCategory = getIntent().getStringExtra("category");
+
+        mRadiusSeek.setProgress(DEFAULT_SEEK);
+
+        showProgress(true);
     }
 
     private void refresh() {
+
         showProgress(true);
+
+        Log.i(TAG, "Fresh fresh");
 
         // Get the last known location
         updateLocation();
@@ -119,15 +136,15 @@ public class AdListActivity extends LocationActivity implements AdapterView.OnIt
         if(accuracy > MIN_ACCURACY || freshness > MIN_FRESHNESS) {
             if(locationUpdatesEnabled && System.currentTimeMillis() - currentUpdateStart > UPDATE_TIMEOUT) {
                 stopLocationUpdates();
-                Log.i("AdListActivity", "Location update timed out");
-                Log.i("AdListActivity", "Refreshing with a location accuracy: " + accuracy + " and freshness: " + freshness);
+                Log.i(TAG, "Location update timed out");
+                Log.i(TAG, "Refreshing with a location accuracy: " + accuracy + " and freshness: " + freshness);
                 mAdManager.fetchAds(mCategory, mCurrentLocation, mRadius);
             } else {
                 startLocationUpdates();
             }
         } else {
             stopLocationUpdates();
-            Log.i("AdListActivity", "Refreshing with a location accuracy: " + accuracy + " and freshness: " + freshness);
+            Log.i(TAG, "Refreshing with a location accuracy: " + accuracy + " and freshness: " + freshness);
             mAdManager.fetchAds(mCategory, mCurrentLocation, mRadius);
         }
     }
@@ -135,14 +152,32 @@ public class AdListActivity extends LocationActivity implements AdapterView.OnIt
     @Override
     public void doUponCompletion(Bundle data) {
         List<Ad> ads = data.getParcelableArrayList("ads");
+        mLastRefreshTime = System.currentTimeMillis();
         populateAdList(ads);
+
+        if(ads.size() > 0) {
+            mRangeLabel.setText(getString(R.string.radius_label, String.format("%.2f", mRadius)));
+        } else {
+            mRangeLabel.setText(getString(R.string.ad_list_nothing_found, String.format("%.2f", mRadius)));
+        }
 
         showProgress(false);
     }
 
     @Override
-    protected void handleLocationUpdate() {
+    public void onLocationChanged(Location location) {
+        super.onLocationChanged(location);
         refresh();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        super.onConnected(bundle);
+
+        // Prevent unnecessary server requests if e.g. returning from an AdViewActivity
+        if(System.currentTimeMillis() - mLastRefreshTime > 1000*60*60*5) {
+            refresh();
+        }
     }
 
     private void populateAdList(List<Ad> ads) {

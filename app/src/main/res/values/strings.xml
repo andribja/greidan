@@ -48,6 +48,8 @@
     <string name="action_logout">Log out</string>
 
     <string name="radius">Radius</string>
+    <string name="radius_label">Auglýsingar innan %1$s km</string>
+    <string name="ad_list_nothing_found">Ekkert fannst innan %1$s km</string>
 
     <string name="title_activity_ad_list">Auglýsingar</string>
     <string name="title_activity_new_ad">Ný auglýsing</string>

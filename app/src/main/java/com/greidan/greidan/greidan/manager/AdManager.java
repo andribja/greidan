@@ -198,13 +198,12 @@ public class AdManager {
         @Override
         protected JSONObject doInBackground(Void... params) {
             ServerRequest request = new ServerRequest();
-            JSONObject jObj;
 
             if(post) {
                 return request.postToUrl(url, requestParams);
+            } else {
+                return request.getFromUrl(url, requestParams);
             }
-
-            return request.getFromUrl(url, requestParams);
         }
 
         @Override

@@ -119,6 +119,14 @@ public class UserManager {
         task.execute();
     }
 
+    public void fetchUserProfile(String id) {
+        ArrayList<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("_id", id));
+
+        UserTask task = new UserTask((ProgressActivity) activity, profileUrl, params, false);
+        task.execute();
+    }
+
     private void handleRequestedData(JSONObject jObj, Bundle response) {
 
         if(jObj != null) {

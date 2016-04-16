@@ -27,9 +27,9 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_username">Username</string>
-    <string name="prompt_password">Password</string>
-    <string name="confirm_password">Password (confirm)</string>
+    <string name="prompt_username">Notandanafn</string>
+    <string name="prompt_password">Lykilorð</string>
+    <string name="confirm_password">Staðfesta lykilorð</string>
     <string name="action_sign_in">Skrá inn</string>
     <string name="action_register">Skrá notanda</string>
     <string name="action_sign_in_short">Skrá inn</string>
@@ -64,6 +64,11 @@
     <string name="button_message">Senda skilaboð</string>
     <string name="button_review">Gefa umsögn</string>
     <string name="label_reviews">Umsagnir</string>
+    <string name="prompt_old_password">Gamla lykilorð</string>
+    <string name="prompt_new_password">Nýtt lykilorð</string>
+    <string name="button_update">Uppfæra</string>
+    <string name="button_cancel">Hætta við</string>
+    <string name="profile_edit">Breyta</string>
 
     <!-- Random junk-->
     <string-array name="categories">

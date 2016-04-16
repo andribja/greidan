@@ -52,6 +52,7 @@
     <string name="user_rating">Einkunn: %1$.1f</string>
     <string name="button_message">Senda skilaboð</string>
     <string name="button_review">Gefa umsögn</string>
+    <string name="label_reviews">Umsagnir</string>
 
     <!-- Random junk-->
     <string-array name="categories">

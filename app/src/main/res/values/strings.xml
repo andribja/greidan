@@ -49,6 +49,12 @@
     <string name="action_ad_post">Setja inn</string>
     <string name="action_ad_cancel">Hætta við</string>
 
+    <!-- Strings related to posting a new ad -->
+    <string name="prompt_message_subject">Titill</string>
+    <string name="prompt_message_content">Efni</string>
+    <string name="action_message_post">Senda</string>
+    <string name="action_message_cancel">Hætta við</string>
+
     <!-- Strings related to ad list activity-->
     <string name="radius">Radius</string>
     <string name="radius_label">Auglýsingar innan %1$s km</string>

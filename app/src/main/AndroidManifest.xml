@@ -55,8 +55,8 @@
         <activity android:name=".activity.AdViewActivity" />
         <activity
             android:name=".activity.UserProfileActivity"
-            android:label="@string/title_activity_user_profile">
-        </activity>
+            android:label="@string/title_activity_user_profile"></activity>
+        <activity android:name=".activity.NewMessageActivity"></activity>
     </application>
 
 </manifest>

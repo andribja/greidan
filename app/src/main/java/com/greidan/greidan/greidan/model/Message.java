@@ -18,7 +18,7 @@ import java.util.Date;
 
 public class Message implements Parcelable {
 
-    long id;
+    String id;
     String subject;
     String content;
     long recipientId;
@@ -30,7 +30,7 @@ public class Message implements Parcelable {
 
     }
 
-    public Message(long id, String subject, String content, long recipientId, long authorId, String authorName, Date timePosted) {
+    public Message(String id, String subject, String content, long recipientId, long authorId, String authorName, Date timePosted) {
         this.id = id;
         this.subject = subject;
         this.content = content;
@@ -43,7 +43,7 @@ public class Message implements Parcelable {
     public Message(JSONObject jsonMessage) throws JSONException, ParseException {
         UserManager userManager = new UserManager(null);
 
-        this.id = jsonMessage.getLong("_id");
+        this.id = jsonMessage.getString("_id");
         this.subject = jsonMessage.getString("subject");
         this.content = jsonMessage.getString("content");
         this.recipientId = jsonMessage.getLong("recipient_id");
@@ -55,7 +55,7 @@ public class Message implements Parcelable {
     public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
 
-        values.put(DbSchema.MessageTable.Cols.ID, Long.toString(id));
+        values.put(DbSchema.MessageTable.Cols.ID, id);
         values.put(DbSchema.MessageTable.Cols.SUBJECT, subject);
         values.put(DbSchema.MessageTable.Cols.CONTENT, content);
         values.put(DbSchema.MessageTable.Cols.AUTHOR_ID, authorId);
@@ -86,7 +86,7 @@ public class Message implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeString(id);
         dest.writeString(subject);
         dest.writeString(content);
         dest.writeLong(authorId);
@@ -97,7 +97,7 @@ public class Message implements Parcelable {
     public Message(Parcel in) throws ParseException {
         UserManager userManager = new UserManager(null);
 
-        id = in.readLong();
+        id = in.readString();
         subject = in.readString();
         content = in.readString();
         authorName = in.readString();
@@ -124,7 +124,7 @@ public class Message implements Parcelable {
 
     /* Getters and setters */
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -152,7 +152,7 @@ public class Message implements Parcelable {
         return timePosted;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

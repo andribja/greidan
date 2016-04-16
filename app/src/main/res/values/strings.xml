@@ -5,19 +5,18 @@
     <string name="host">http://10.0.2.2</string>
     <string name="port">8080</string>
 
+    <!-- Activity titles-->
+    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_user_profile">Notandi</string>
+    <string name="title_activity_ad_list">Auglýsingar</string>
+    <string name="title_activity_new_ad">Ný auglýsing</string>
+    <string name="title_activity_register">Register</string>
+
+    <!-- Strings related to main activity-->
     <string name="search">Skoða</string>
     <string name="post">Setja inn</string>
     <string name="settings">Stillingar</string>
-
-    <string-array name="categories">
-        <item>Handverk</item>
-        <item>Skutl</item>
-        <item>Lán á tólum</item>
-        <item>Forritun</item>
-        <item>Annað</item>
-    </string-array>
-
-    <string name="title_activity_login">Sign in</string>
+    <string name="action_logout">Log out</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -31,9 +30,7 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing emailcompletions."</string>
     <string name="button_register">Nýskráning</string>
     <string name="button_login">Innskráning</string>
     <string name="action_register_link">Smelltu hér til að stofna aðgang</string>
@@ -45,14 +42,29 @@
     <string name="action_ad_post">Setja inn</string>
     <string name="action_ad_cancel">Hætta við</string>
 
-    <string name="action_logout">Log out</string>
-
+    <!-- Strings related to ad list activity-->
     <string name="radius">Radius</string>
     <string name="radius_label">Auglýsingar innan %1$s km</string>
     <string name="ad_list_nothing_found">Ekkert fannst innan %1$s km</string>
 
-    <string name="title_activity_ad_list">Auglýsingar</string>
-    <string name="title_activity_new_ad">Ný auglýsing</string>
-    <string name="title_activity_register">Register</string>
+    <!-- Strings related to user profile activity -->
+    <string name="member_since">Meðlimur síðan %1$s</string>
+    <string name="user_rating">Einkunn: %1$.1f</string>
+    <string name="button_message">Senda skilaboð</string>
+    <string name="button_review">Gefa umsögn</string>
+
+    <!-- Random junk-->
+    <string-array name="categories">
+        <item>Handverk</item>
+        <item>Skutl</item>
+        <item>Lán á tólum</item>
+        <item>Forritun</item>
+        <item>Annað</item>
+        <item>Handverk</item>
+        <item>Skutl</item>
+        <item>Lán á tólum</item>
+        <item>Forritun</item>
+        <item>Annað</item>
+    </string-array>
 
 </resources>

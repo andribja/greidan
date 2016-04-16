@@ -47,6 +47,10 @@
     <string name="radius_label">Auglýsingar innan %1$s km</string>
     <string name="ad_list_nothing_found">Ekkert fannst innan %1$s km</string>
 
+    <!-- Strings related to ad view activity -->
+    <string name="author">Höfundur: %1$s</string>
+    <string name="time_posted_with_category">Sett inn þann %1$s í flokkinn %2$s</string>
+
     <!-- Strings related to user profile activity -->
     <string name="member_since">Meðlimur síðan %1$s</string>
     <string name="user_rating">Einkunn: %1$.1f</string>

@@ -186,8 +186,7 @@ public class AdListActivity extends LocationActivity {
             this.ads.put(ad.getId(), ad);
         }
 
-        AdListAdapter arrayAdapter = new AdListAdapter(this, ads);
-        mListView.setAdapter(arrayAdapter);
+        mListView.setAdapter(new AdListAdapter(this, ads));
     }
 
     private class AdListAdapter extends ArrayAdapter<Ad> {

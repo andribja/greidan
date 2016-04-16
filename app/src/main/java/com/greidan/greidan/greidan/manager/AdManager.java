@@ -156,7 +156,7 @@ public class AdManager {
         ((ProgressActivity) activity).doUponCompletion(data);
     }
 
-    private void handleRequestedData(JSONObject jObj) {
+    private void handleRequestedData(JSONObject jObj, Bundle data) {
         ArrayList<Ad> ads = new ArrayList<Ad>();
 
         if(jObj != null) {
@@ -177,7 +177,6 @@ public class AdManager {
             }
         }
 
-        Bundle data = new Bundle();
         data.putParcelableArrayList("ads", ads);
         ((ProgressActivity) activity).doUponCompletion(data);
     }
@@ -210,28 +209,35 @@ public class AdManager {
 
         @Override
         protected void onPostExecute(JSONObject jObj) {
+            boolean success = false;
+            String message = "";
+            Bundle data = new Bundle();
 
-            if(post) {
-                Boolean success = false;
-                String message = "";
-                String id = "";
-
-                try { id = jObj.getString("_id"); }
-                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
-
+            if(jObj == null) {
+                Log.e("AdListActivity", "Json object is null");
+                data.putBoolean("error", true);
+                data.putString("message", "An error occurred");
+            } else {
                 try { success = jObj.getBoolean("success"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
                 try { message = jObj.getString("response"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
-                Bundle data = new Bundle();
                 data.putBoolean("success", success);
                 data.putString("message", message);
+            }
+
+            if(post) {
+                String id = "";
+
+                try { id = jObj.getString("_id"); }
+                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
                 data.putString("id", id);
                 activity.doUponCompletion(data);
             } else {
-                handleRequestedData(jObj);
+                handleRequestedData(jObj, data);
             }
         }
     }

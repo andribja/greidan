@@ -141,6 +141,7 @@ public class AdListActivity extends LocationActivity {
                 mAdManager.fetchAds(mCategory, mCurrentLocation, mRadius);
             } else {
                 startLocationUpdates();
+                Toast.makeText(this, "Aquiring location", Toast.LENGTH_SHORT).show();
             }
         } else {
             stopLocationUpdates();
@@ -159,6 +160,10 @@ public class AdListActivity extends LocationActivity {
             mRangeLabel.setText(getString(R.string.radius_label, String.format("%.2f", mRadius)));
         } else {
             mRangeLabel.setText(getString(R.string.ad_list_nothing_found, String.format("%.2f", mRadius)));
+        }
+
+        if(data.getBoolean("error")) {
+            Toast.makeText(this, "Connection failed", Toast.LENGTH_SHORT).show();
         }
 
         showProgress(false);

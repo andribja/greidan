@@ -48,7 +48,7 @@ public abstract class LocationActivity extends ProgressActivity implements
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.e(TAG, "Connection to Google Location Services failed");
     }
 
     @Override

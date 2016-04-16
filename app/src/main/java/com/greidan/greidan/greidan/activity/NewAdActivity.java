@@ -96,6 +96,10 @@ public class NewAdActivity extends LocationActivity {
 
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
 
+        if(data.getBoolean("error")) {
+            showProgress(false);
+        }
+
         if(success) {
             newAd.setId(id);
 

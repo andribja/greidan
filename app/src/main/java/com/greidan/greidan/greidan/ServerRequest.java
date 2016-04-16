@@ -15,13 +15,20 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
 
 public class ServerRequest {
+
+    private static final String TAG = "ServerRequest";
+    private static final int CONNECTION_TIMEOUT = 3000;
 
     static InputStream is = null;
     static JSONObject jObj = null;
@@ -50,13 +57,19 @@ public class ServerRequest {
     }
 
     public JSONObject executeRequest(HttpRequestBase requestBase) {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        Log.i("ServerRequest", requestBase.getURI().toString());
+        HttpParams params = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
+
+        DefaultHttpClient httpClient = new DefaultHttpClient(params);
+        Log.i(TAG, requestBase.getURI().toString());
 
         try {
             HttpResponse httpResponse = httpClient.execute(requestBase);
             HttpEntity httpEntity = httpResponse.getEntity();
             is = httpEntity.getContent();
+        } catch (ConnectTimeoutException e) {
+            Log.i(TAG, "Connection timed out");
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
         }

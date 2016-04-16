@@ -1,13 +1,17 @@
 package com.greidan.greidan.greidan.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.greidan.greidan.greidan.R;
@@ -21,6 +25,9 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
     AdManager adManager;
     UserManager userManager;
 
+    LinearLayout mSideBar;
+    ListView mSideBarList;
+    DrawerLayout mDrawerLayout;
     Button mButtonNewPost;
     ListView mCategoryList;
 
@@ -31,6 +38,28 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
 
         adManager = new AdManager(this);
         userManager = new UserManager(this);
+
+        mSideBar = (LinearLayout) findViewById(R.id.main_sidebar);
+        mSideBarList = (ListView) findViewById(R.id.main_sidebar_list);
+        mSideBarList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Context ctx = MainActivity.this;
+                Intent intent = null;
+                switch (position) {
+                    case 0:
+                        intent = new Intent(ctx, UserProfileActivity.class);
+                        break;
+                    // TODO: implement other list items
+                }
+
+                if(intent != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
 
         mCategoryList = (ListView) findViewById(R.id.main_categories);
         mCategoryList.setOnItemClickListener(this);

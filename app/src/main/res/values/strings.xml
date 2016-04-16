@@ -17,6 +17,13 @@
     <string name="post">Setja inn</string>
     <string name="settings">Stillingar</string>
     <string name="action_logout">Log out</string>
+    <string-array name="main_sidebar_items">
+        <item>Prófíll</item>
+        <item>Mínar auglýsingar</item>
+        <item>Skilaboð</item>
+        <item>blabla</item>
+        <item>foobar</item>
+    </string-array>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

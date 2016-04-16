@@ -1,29 +1,128 @@
 package com.greidan.greidan.greidan.model;
 
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
 
-// TODO: implement Parcelable instead of Serializable
-public class User implements Serializable {
+public class User implements Parcelable {
 
-    int id;
+    String id;
     String username;
     String email;
+    Date timeJoined;
+    String extImagePath;
+    Uri localImageUri;
+    double rating;
 
-    public User(int id, String username, String email) {
+    public User(String id, String username, String email, Date timeJoined, String extImagePath, double rating) {
         this.id = id;
         this.username = username;
         this.email = email;
+        this.timeJoined = timeJoined;
+        this.extImagePath = extImagePath;
+        this.rating = rating;
+    }
+
+    public User(JSONObject jObj) throws JSONException {
+        this.id = jObj.getString("_id");
+        this.username = jObj.getString("username");
+        this.email = jObj.getString("email");
+        this.timeJoined = new Date(jObj.getLong("timeJoined"));
+        this.extImagePath = jObj.getString("imgPath");
+        this.rating = jObj.getDouble("rating");
     }
 
     public String getUsername() {
         return username;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     public String getEmail() {
         return email;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getTimeJoined() {
+        return timeJoined;
+    }
+
+    public void setTimeJoined(Date timeJoined) {
+        this.timeJoined = timeJoined;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+
+    /// Impelemnt parcelable
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(username);
+        dest.writeString(email);
+        dest.writeString(timeJoined.toString());
+        dest.writeString(extImagePath);
+        dest.writeString(localImageUri.toString());
+        dest.writeDouble(rating);
+    }
+
+    public User(Parcel in) throws ParseException {
+        this.id = in.readString();
+        this.username = in.readString();
+        this.email = in.readString();
+        this.timeJoined = new Date(in.readString());
+        this.extImagePath = in.readString();
+        this.localImageUri = Uri.parse(in.readString());
+        this.rating = in.readDouble();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+
+        @Override
+        public Object createFromParcel(Parcel source) {
+            try {
+                return new User(source);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        public Object[] newArray(int size) {
+            return new Object[0];
+        }
+    };
 }

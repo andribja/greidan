@@ -16,9 +16,11 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DbSchema.DROP_TABLE_ADS);
         db.execSQL(DbSchema.DROP_TABLE_USERS);
+        db.execSQL(DbSchema.DROP_TABLE_MESSAGES);
 
         db.execSQL(DbSchema.CREATE_TABLE_ADS);
         db.execSQL(DbSchema.CREATE_TABLE_USERS);
+        db.execSQL(DbSchema.CREATE_TABLE_MESSAGES);
     }
 
     @Override

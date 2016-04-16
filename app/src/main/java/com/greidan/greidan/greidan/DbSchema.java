@@ -19,8 +19,18 @@ public class DbSchema {
                     UserTable.Cols.USERNAME + " TEXT, " +
                     UserTable.Cols.EMAIL + " TEXT)";
 
+    public static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + MessageTable.NAME + "(" +
+                    MessageTable.Cols.ID + "INTEGER PRIMARY KEY," +
+                    MessageTable.Cols.SUBJECT + "TEXT, " +
+                    MessageTable.Cols.CONTENT + "TEXT, " +
+                    MessageTable.Cols.AUTHOR_ID + "INTEGER, " +
+                    MessageTable.Cols.RECIPIENT_ID + "INTEGER, " +
+                    MessageTable.Cols.AUTHOR_NAME + "TEXT, " +
+                    MessageTable.Cols.TIME_POSTED + "TEXT)";
+
     public static final String DROP_TABLE_ADS = "DROP TABLE IF EXISTS Ads";
     public static final String DROP_TABLE_USERS = "DROP TABLE IF EXISTS Users";
+    public static final String DROP_TABLE_MESSAGES = "DROP TABLE IF EXISTS Messages";
 
     public static final class AdTable {
         public static final String NAME = "Ads";
@@ -45,4 +55,20 @@ public class DbSchema {
             public static final String EMAIL = "email";
         }
     }
+
+    public static final class MessageTable {
+        public static final String NAME = "Messages";
+        public static final class Cols {
+            public static final String ID = "id";
+            public static final String SUBJECT = "subject";
+            public static final String CONTENT = "content";
+            public static final String AUTHOR_ID = "author_id";
+            public static final String RECIPIENT_ID = "recipient_id";
+            public static final String AUTHOR_NAME = "author_name";
+            public static final String TIME_POSTED = "time_posted";
+        }
+    }
+
 }
+
+

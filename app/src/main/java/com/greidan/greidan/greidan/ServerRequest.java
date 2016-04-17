@@ -1,6 +1,7 @@
 package com.greidan.greidan.greidan;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,6 +17,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -36,6 +40,15 @@ public class ServerRequest {
 
     public ServerRequest() {
 
+    }
+
+    public JSONObject postFileToUrl(String url, String paramName, File file, String fileType) {
+        MultipartEntityBuilder multipartEntity = MultipartEntityBuilder.create();
+        multipartEntity.addBinaryBody(paramName, file, ContentType.create(fileType), file.getName());
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.setEntity(multipartEntity.build());
+
+        return executeRequest(httpPost);
     }
 
     public JSONObject getFromUrl(String url, List<NameValuePair> params) {

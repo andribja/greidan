@@ -43,7 +43,9 @@ public class AdViewActivity extends ActionBarActivity {
         mTimePosted = (TextView) findViewById(R.id.ad_view_time_posted);
         mContent = (TextView) findViewById(R.id.ad_view_content);
 
+
         DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+
 
         mTitle.setText(ad.getTitle());
         mAuthor.setText(String.format(getString(R.string.author), ad.getAuthorName()));

@@ -102,7 +102,7 @@ public class Ad implements Parcelable {
         dest.writeString(content);
         dest.writeString(category);
         dest.writeString(authorName);
-        dest.writeString(timePosted.toString());
+        dest.writeLong(timePosted.getTime());
         dest.writeDouble(location.getLatitude());
         dest.writeDouble(location.getLongitude());
         dest.writeString(extFilename);

@@ -41,7 +41,7 @@ public class AdViewActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         Ad ad = (Ad) bundle.getParcelable("ad");
 
-        DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
         mTitle.setText(ad.getTitle());
         mAuthor.setText(String.format(getString(R.string.author), ad.getAuthorName()));

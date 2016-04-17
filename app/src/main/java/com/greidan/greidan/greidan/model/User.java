@@ -18,7 +18,7 @@ public class User implements Parcelable {
     String email;
     Date timeJoined;
     String extImagePath;
-    Uri localImageUri;
+    String localImage;
     double rating;
 
     public User(String id, String username, String email, Date timeJoined, String extImagePath, double rating) {
@@ -93,7 +93,7 @@ public class User implements Parcelable {
         dest.writeString(email);
         dest.writeString(timeJoined.toString());
         dest.writeString(extImagePath);
-        dest.writeString(localImageUri.toString());
+        dest.writeString(localImage);
         dest.writeDouble(rating);
     }
 
@@ -103,7 +103,7 @@ public class User implements Parcelable {
         this.email = in.readString();
         this.timeJoined = new Date(in.readString());
         this.extImagePath = in.readString();
-        this.localImageUri = Uri.parse(in.readString());
+        this.localImage = in.readString();
         this.rating = in.readDouble();
     }
 

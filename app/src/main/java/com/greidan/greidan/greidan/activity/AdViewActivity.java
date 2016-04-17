@@ -27,19 +27,21 @@ public class AdViewActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_view);
 
+        Bundle bundle = getIntent().getExtras();
+        final Ad ad = (Ad) bundle.getParcelable("ad");
+
         mTitle = (TextView) findViewById(R.id.ad_view_title);
         mAuthor = (TextView) findViewById(R.id.ad_view_author);
         mAuthor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdViewActivity.this, UserProfileActivity.class));
+                Intent intent = new Intent(AdViewActivity.this, UserProfileActivity.class);
+                intent.putExtra("username", ad.getAuthorName());
+                startActivity(intent);
             }
         });
         mTimePosted = (TextView) findViewById(R.id.ad_view_time_posted);
         mContent = (TextView) findViewById(R.id.ad_view_content);
-
-        Bundle bundle = getIntent().getExtras();
-        Ad ad = (Ad) bundle.getParcelable("ad");
 
         DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
 

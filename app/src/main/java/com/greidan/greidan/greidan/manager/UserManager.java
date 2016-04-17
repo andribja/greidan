@@ -122,9 +122,17 @@ public class UserManager {
         task.execute();
     }
 
-    public void fetchUserProfile(String id) {
+    public void fetchUserProfileById(String id) {
         ArrayList<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("_id", id));
+
+        UserTask task = new UserTask((ProgressActivity) activity, profileUrl, params, false);
+        task.execute();
+    }
+
+    public void fetchUserProfileByUsername(String username) {
+        ArrayList<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("username", username));
 
         UserTask task = new UserTask((ProgressActivity) activity, profileUrl, params, false);
         task.execute();

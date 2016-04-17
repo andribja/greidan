@@ -1,31 +1,42 @@
 package com.greidan.greidan.greidan.activity;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.greidan.greidan.greidan.RealPathUtil;
 import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.manager.AdManager;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.UserManager;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class NewAdActivity extends LocationActivity {
 
+    private static final String TAG = "NewAdActivity";
     private static final int MIN_ACCURACY = 20;
     private static final int MIN_FRESHNESS = 60*60*1000;
     private static final int UPDATE_INTERVAL = 3000;
     private static final int MIN_UPDATE_INTERVAL = 1000;
+    private static final int SELECT_PICTURE = 1;
 
     AdManager mAdManager;
     UserManager mUserManager;
@@ -35,8 +46,13 @@ public class NewAdActivity extends LocationActivity {
     Spinner mCategory;
     Button mButtonPost;
     Button mButtonCancel;
+    ImageView mImagePicker;
+
+    LinearLayout mImagesLayout;
 
     Ad newAd;
+    String imagePath;
+    List<String> imagePaths;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,51 @@ public class NewAdActivity extends LocationActivity {
 
         mContainerView = findViewById(R.id.new_ad_container);
         mProgressView = findViewById(R.id.new_ad_progress);
+
+        mImagePicker = (ImageView) findViewById(R.id.new_ad_image);
+        mImagePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, SELECT_PICTURE);
+            }
+        });
+
+        imagePaths = new ArrayList<>();
+
+        mImagesLayout = (LinearLayout) findViewById(R.id.new_ad_image_layout);
+
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            Uri selectedImageUri = data.getData();
+            imagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
+
+            Log.i(TAG, "Image path: " + imagePath);
+
+            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+//            addImage(imagePath);
+        }
+    }
+
+    // For adding multiple pictures
+    private void addImage(String path) {
+        imagePaths.add(path);
+
+        ImageView imageView = new ImageView(this);
+        imageView.setPadding(2, 2, 2, 2);
+        imageView.setImageBitmap(BitmapFactory.decodeFile(path));
+        imageView.setAdjustViewBounds(true);
+        imageView.setLayoutParams(new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+        ));
+
+        mImagesLayout.addView(imageView);
+
     }
 
     private void attemptPostAd(String title, String content, String category, Location location) {

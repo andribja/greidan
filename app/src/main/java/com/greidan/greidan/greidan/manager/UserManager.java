@@ -229,6 +229,7 @@ public class UserManager {
             if(jObj == null) {
                 response.putBoolean("error", true);
             } else {
+                Log.i(TAG, "Got back: " + jObj.toString());
                 try { success = jObj.getBoolean("success"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 

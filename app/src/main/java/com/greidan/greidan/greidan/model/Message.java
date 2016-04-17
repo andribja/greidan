@@ -21,8 +21,8 @@ public class Message implements Parcelable {
     String id;
     String subject;
     String content;
-    long recipientId;
-    long authorId;
+    String recipientId;
+    String authorId;
     String authorName;
     Date timePosted;
 
@@ -30,7 +30,7 @@ public class Message implements Parcelable {
 
     }
 
-    public Message(String id, String subject, String content, long recipientId, long authorId, String authorName, Date timePosted) {
+    public Message(String id, String subject, String content, String recipientId, String authorId, String authorName, Date timePosted) {
         this.id = id;
         this.subject = subject;
         this.content = content;
@@ -46,8 +46,8 @@ public class Message implements Parcelable {
         this.id = jsonMessage.getString("_id");
         this.subject = jsonMessage.getString("subject");
         this.content = jsonMessage.getString("content");
-        this.recipientId = jsonMessage.getLong("recipient_id");
-        this.authorId = jsonMessage.getLong("author_id");
+        this.recipientId = jsonMessage.getString("recipient_id");
+        this.authorId = jsonMessage.getString("author_id");
         this.authorName = jsonMessage.getString("author_name");
         this.timePosted = new Date(jsonMessage.getLong("timePosted"));
     }
@@ -70,8 +70,8 @@ public class Message implements Parcelable {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("subject", subject));
         requestParams.add(new BasicNameValuePair("content", content));
-        requestParams.add(new BasicNameValuePair("author_id", Long.toString(authorId)));
-        requestParams.add(new BasicNameValuePair("recipient_id", Long.toString(recipientId)));
+        requestParams.add(new BasicNameValuePair("author_id", authorId));
+        requestParams.add(new BasicNameValuePair("recipient_id", recipientId));
 
         return requestParams;
     }
@@ -89,8 +89,8 @@ public class Message implements Parcelable {
         dest.writeString(id);
         dest.writeString(subject);
         dest.writeString(content);
-        dest.writeLong(authorId);
-        dest.writeLong(recipientId);
+        dest.writeString(authorId);
+        dest.writeString(recipientId);
         dest.writeString(timePosted.toString());
     }
 
@@ -101,8 +101,8 @@ public class Message implements Parcelable {
         subject = in.readString();
         content = in.readString();
         authorName = in.readString();
-        authorId = in.readLong();
-        recipientId = in.readLong();
+        authorId = in.readString();
+        recipientId = in.readString();
         timePosted = new Date(in.readLong());
     }
 
@@ -140,11 +140,11 @@ public class Message implements Parcelable {
         return authorName;
     }
 
-    public long getAuthorId() {
+    public String getAuthorId() {
         return authorId;
     }
 
-    public long getRecipientId() {
+    public String getRecipientId() {
         return recipientId;
     }
 
@@ -164,11 +164,11 @@ public class Message implements Parcelable {
         this.content = content;
     }
 
-    public void setAuthorId(long authorId) {
+    public void setAuthorId(String authorId) {
         this.authorId = authorId;
     }
 
-    public void setRecipient(long recipientId) {
+    public void setRecipient(String recipientId) {
         this.recipientId = recipientId;
     }
 

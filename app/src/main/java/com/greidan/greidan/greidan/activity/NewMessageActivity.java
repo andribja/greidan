@@ -56,7 +56,7 @@ public class NewMessageActivity extends ProgressActivity {
     private void attemptPostMessage(String subject, String content) {
         showProgress(true);
         // TODO: Feed the message correct information about users
-        newMessage = new Message("0", subject, content, 1337, 7331, mUserManager.getLoggedInUsername(), new Date());
+        newMessage = new Message("0", subject, content, "1337", "7331", mUserManager.getLoggedInUsername(), new Date());
         mMessageManager.postMessageToServer(newMessage);
     }
 

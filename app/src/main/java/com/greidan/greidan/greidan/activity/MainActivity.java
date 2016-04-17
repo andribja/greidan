@@ -50,6 +50,9 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
                     case 0:
                         intent = new Intent(ctx, UserProfileActivity.class);
                         break;
+                    case 2:
+                        intent = new Intent(ctx, MessageListActivity.class);
+                        break;
                     // TODO: implement other list items
                 }
 

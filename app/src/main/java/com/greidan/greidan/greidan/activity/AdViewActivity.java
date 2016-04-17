@@ -44,7 +44,7 @@ public class AdViewActivity extends ActionBarActivity {
         mContent = (TextView) findViewById(R.id.ad_view_content);
 
 
-        DateFormat df = new SimpleDateFormat("dd/mm/yyyy");
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
 
         mTitle.setText(ad.getTitle());

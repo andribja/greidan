@@ -27,7 +27,7 @@
             class="com.greidan.greidan.greidan.fragment.ReviewFragment"
             android:layout_width="match_parent"
             android:layout_height="0px"
-            android:layout_weight="10"
+            android:layout_weight="6.79"
             tools:layout="@layout/fragment_review" />
 
     </LinearLayout>

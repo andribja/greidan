@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -39,21 +40,33 @@ public class UserProfileActivity extends ProgressActivity {
     TextView mMemberSinceView;
     TextView mRatingView;
     ListView mReviewList;
+    Button mSendMessageButton;
+    Button mAddReviewButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        String id = getIntent().getStringExtra("id");
+        String username = getIntent().getStringExtra("username");
 
         userManager = new UserManager(this);
-//        userManager.fetchUserProfile(id);
+        //userManager.fetchUserProfileByUsername(username);
 
         mUsernameView = (TextView) findViewById(R.id.label_username);
         mEmailView = (TextView) findViewById(R.id.label_email);
         mMemberSinceView = (TextView) findViewById(R.id.label_member_since);
         mRatingView = (TextView) findViewById(R.id.label_user_rating);
+
+        mSendMessageButton = (Button) findViewById((R.id.button_message));
+        mSendMessageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, NewMessageActivity.class);
+                startActivity(intent);
+            }
+        });
+        mAddReviewButton = (Button) findViewById((R.id.button_review));
 
         mReviewList = (ListView) findViewById(R.id.review_list);
         mReviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,7 +101,7 @@ public class UserProfileActivity extends ProgressActivity {
             mReviewList.setAdapter(new ReviewAdapter(this, reviewList));
         }
 
-        if(response.containsKey("userlist") || true) {
+        if(response.containsKey("users")) {
             // Temporary until users can be retrieved from server
 //            List<User> userList = response.getParcelableArrayList("userlist");
             List<User> userList = new ArrayList<>();

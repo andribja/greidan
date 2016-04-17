@@ -25,6 +25,7 @@ import com.greidan.greidan.greidan.manager.AdManager;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.UserManager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -146,32 +147,56 @@ public class NewAdActivity extends LocationActivity {
 
         showProgress(true);
         newAd = new Ad("", title, content, category, mUserManager.getLoggedInUsername(), new Date(), location);
-        mAdManager.postAdToServer(newAd);
+
+        if(imagePath != null) {
+            mAdManager.uploadImage(new File(imagePath));
+        } else {
+            mAdManager.postAdToServer(newAd);
+        }
     }
 
     @Override
-    public void doUponCompletion(Bundle data) {
-        boolean success = data.getBoolean("success");
-        String message = data.getString("message");
-        String id = data.getString("id");
+    public void doUponCompletion(Bundle response) {
+        Log.i(TAG, "doUponCompletion, imagePath=" + imagePath);
+        boolean success = response.getBoolean("success");
+        String message = response.getString("message");
 
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        if(imagePath != null) {
+            // Image upload pending
+            if(message.equals("Upload successful")) {
+                // Image upload successful
+                newAd.setExtFilename(response.getString("extFilename"));
+                imagePath = null;
+                mAdManager.postAdToServer(newAd);
+            } else {
+                // Image upload unsuccessful
+                // TODO: handle this
+                Toast.makeText(this, "Image upload failed", Toast.LENGTH_SHORT).show();
+                showProgress(false);
+            }
+        } else {
+            // No image upload pending, upload ad
+            String id = response.getString("id");
 
-        if(data.getBoolean("error")) {
-            showProgress(false);
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+            if(response.getBoolean("error")) {
+                showProgress(false);
+            }
+
+            if(success) {
+                newAd.setId(id);
+
+                Intent intent = new Intent(this, AdViewActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("ad", newAd);
+                intent.putExtras(bundle);
+
+                startActivity(intent);
+                finish();
+            }
         }
 
-        if(success) {
-            newAd.setId(id);
-
-            Intent intent = new Intent(this, AdViewActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putParcelable("ad", newAd);
-            intent.putExtras(bundle);
-
-            startActivity(intent);
-            finish();
-        }
     }
 
     @Override

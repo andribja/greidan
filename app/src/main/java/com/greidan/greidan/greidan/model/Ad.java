@@ -26,6 +26,7 @@ public class Ad implements Parcelable {
     String authorName;
     Date timePosted;
     Location location;
+    String extFilename;
 
     public Ad() {
 
@@ -81,6 +82,7 @@ public class Ad implements Parcelable {
         requestParams.add(new BasicNameValuePair("authorName", authorName));
         requestParams.add(new BasicNameValuePair("lat", Double.toString(location.getLatitude())));
         requestParams.add(new BasicNameValuePair("lng", Double.toString(location.getLongitude())));
+        requestParams.add(new BasicNameValuePair("imgPath", extFilename));
 
         return requestParams;
     }
@@ -103,6 +105,7 @@ public class Ad implements Parcelable {
         dest.writeString(timePosted.toString());
         dest.writeDouble(location.getLatitude());
         dest.writeDouble(location.getLongitude());
+        dest.writeString(extFilename);
     }
 
     public Ad(Parcel in) throws ParseException {
@@ -117,6 +120,7 @@ public class Ad implements Parcelable {
         location = new Location("");
         location.setLatitude(in.readDouble());
         location.setLongitude(in.readDouble());
+        extFilename = in.readString();
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -191,5 +195,13 @@ public class Ad implements Parcelable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public String getExtFilename() {
+        return extFilename;
+    }
+
+    public void setExtFilename(String extFilename) {
+        this.extFilename = extFilename;
     }
 }

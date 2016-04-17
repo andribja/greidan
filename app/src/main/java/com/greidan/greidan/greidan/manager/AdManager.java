@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,12 +29,15 @@ import java.util.List;
 
 public class AdManager {
 
+    private static final String TAG = "AdManager";
+
     UserManager userManager;
     DbHelper dbHelper;
 
     Activity activity;
 
     String adUrl;
+    String imageUrl;
 
     public AdManager(Activity activity) {
         this.activity = activity;
@@ -45,6 +49,7 @@ public class AdManager {
             String port = activity.getString(R.string.port);
 
             adUrl = host + ":" + port + "/ad";
+            imageUrl = host + ":" + port + "/uploadAdImg";
         }
     }
 
@@ -118,7 +123,7 @@ public class AdManager {
     public void postAdToServer(Ad ad) {
         ArrayList<NameValuePair> requestParams = ad.getAsRequestParams();
         requestParams.add(new BasicNameValuePair("token", userManager.getToken()));
-        
+
         ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, true, requestParams);
         task.execute();
     }
@@ -156,6 +161,11 @@ public class AdManager {
         ((ProgressActivity) activity).doUponCompletion(data);
     }
 
+    public void uploadImage(File imageFile) {
+        ServerTask task = new ServerTask((ProgressActivity) activity, imageUrl, "image", imageFile, "image/jpeg");
+        task.execute();
+    }
+
     private void handleRequestedData(JSONObject jObj, Bundle data) {
         ArrayList<Ad> ads = new ArrayList<Ad>();
 
@@ -188,6 +198,20 @@ public class AdManager {
         String url;
         boolean post;
 
+        String paramName;
+        File file;
+        String fileType;
+
+        public ServerTask(ProgressActivity activity, String url, String paramName, File file, String fileType) {
+            this.activity = activity;
+            this.url = url;
+            this.paramName = paramName;
+            this.file = file;
+            this.fileType = fileType;
+
+            this.post = true;
+        }
+
         public ServerTask(ProgressActivity activity, String url, boolean post, List<NameValuePair> requestParams) {
             this.activity = activity;
             this.requestParams = requestParams;
@@ -200,7 +224,11 @@ public class AdManager {
             ServerRequest request = new ServerRequest();
 
             if(post) {
-                return request.postToUrl(url, requestParams);
+                if(file != null) {
+                    return request.postFileToUrl(url, paramName, file, fileType);
+                } else {
+                    return request.postToUrl(url, requestParams);
+                }
             } else {
                 return request.getFromUrl(url, requestParams);
             }
@@ -217,6 +245,8 @@ public class AdManager {
                 data.putBoolean("error", true);
                 data.putString("message", "An error occurred");
             } else {
+                Log.i(TAG, "Got back:" + jObj.toString());
+
                 try { success = jObj.getBoolean("success"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
@@ -228,12 +258,21 @@ public class AdManager {
             }
 
             if(post) {
-                String id = "";
+                if(file != null) {
+                    String extFilename = null;
+                    try { extFilename = jObj.getJSONObject("file").getString("path"); }     // TODO: path or filename?
+                    catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
-                try { id = jObj.getString("_id"); }
-                catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+                    data.putString("extFilename", extFilename);
+                } else {
+                    String id = "";
 
-                data.putString("id", id);
+                    try { id = jObj.getString("_id"); }
+                    catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
+                    data.putString("id", id);
+                }
+
                 activity.doUponCompletion(data);
             } else {
                 handleRequestedData(jObj, data);

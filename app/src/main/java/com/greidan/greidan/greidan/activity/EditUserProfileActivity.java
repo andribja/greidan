@@ -26,6 +26,8 @@ public class EditUserProfileActivity extends ProgressActivity {
     private static final String TAG = "EditProfileActivity";
     private static final int SELECT_PICTURE = 1;
 
+    UserManager userManager;
+
     User user;
 
     private String selectedImagePath;
@@ -44,6 +46,8 @@ public class EditUserProfileActivity extends ProgressActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
+
+        userManager = new UserManager(this);
 
         user = getIntent().getParcelableExtra("user");
 
@@ -69,6 +73,15 @@ public class EditUserProfileActivity extends ProgressActivity {
 
             }
         });
+
+        mUpdateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(imageFile != null) {
+                    userManager.uploadImage(imageFile);
+                }
+            }
+        });
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -76,9 +89,8 @@ public class EditUserProfileActivity extends ProgressActivity {
             Uri selectedImageUri = data.getData();
             selectedImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
 
-            imageFile = new File(selectedImageUri.toString());
-
-            Log.i("EditProfile", selectedImagePath);
+            Log.i(TAG, "Image path: " + selectedImagePath);
+            imageFile = new File(selectedImagePath);
 
             mImagePicker.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
         }
@@ -86,6 +98,7 @@ public class EditUserProfileActivity extends ProgressActivity {
 
     @Override
     public void doUponCompletion(Bundle response) {
-
+        Log.i(TAG, "doUpoonCompletion");
+        Log.i(TAG, response.toString());
     }
 }

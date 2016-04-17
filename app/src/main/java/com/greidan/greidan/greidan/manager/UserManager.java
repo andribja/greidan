@@ -18,13 +18,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.Attributes;
 
 public class UserManager {
+
+    public static final String TAG = "UserManager";
 
     SharedPreferences prefs;
     Activity activity;
@@ -32,6 +33,7 @@ public class UserManager {
     String logoutUrl;
     String registerUrl;
     String profileUrl;
+    String imageUrl;
 
     public UserManager(Activity activity) {
         this.activity = activity;
@@ -44,6 +46,7 @@ public class UserManager {
             logoutUrl = host + ":" + port + "/logout";
             registerUrl = host + ":" + port + "/register";
             profileUrl = host + ":" + port + "/user";
+            imageUrl = host + ":" + port + "/uploadUserImg";
         }
     }
 
@@ -127,6 +130,15 @@ public class UserManager {
         task.execute();
     }
 
+    public void postUserProfileUpdate(User user) {
+
+    }
+
+    public void uploadImage(File imageFile) {
+        UserTask task = new UserTask((ProgressActivity) activity, imageUrl, "image", imageFile, "image/jpeg");
+        task.execute();
+    }
+
     private void handleRequestedData(JSONObject jObj, Bundle response) {
 
         if(jObj != null) {
@@ -167,7 +179,21 @@ public class UserManager {
         List<NameValuePair> requestParams;
         boolean post;
 
+        String paramName;
+        File file;
+        String fileType;
+
         ProgressActivity activity;
+
+        public UserTask(ProgressActivity activity, String url, String paramName, File file, String fileType) {
+            this.activity = activity;
+            this.url = url;
+            this.paramName = paramName;
+            this.file = file;
+            this.fileType = fileType;
+
+            this.post = true;
+        }
 
         public UserTask(ProgressActivity activity, String url, List<NameValuePair> params, boolean post) {
             this.url = url;
@@ -182,7 +208,12 @@ public class UserManager {
             ServerRequest request = new ServerRequest();
 
             if(post) {
-                return request.postToUrl(url, requestParams);
+                if(file != null) {
+                    Log.i(TAG, "Posting file " + file.getName());
+                    return request.postFileToUrl(url, paramName, file, fileType);
+                } else {
+                    return request.postToUrl(url, requestParams);
+                }
             } else {
                 return request.getFromUrl(url, requestParams);
             }

@@ -69,8 +69,8 @@
                     android:id="@+id/new_ad_image_layout">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:id="@+id/new_ad_image"
                         android:src="@drawable/powered_by_google_light"/>
 

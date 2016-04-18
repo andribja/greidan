@@ -40,7 +40,7 @@ public class MessageListActivity extends ProgressActivity {
         mListView = (ListView) findViewById(R.id.message_list);
 
         showProgress(true);
-        mMessageManager.fetchMessages();
+        mMessageManager.fetchMessagesByToken();
     }
 
     public void doUponCompletion(Bundle data) {

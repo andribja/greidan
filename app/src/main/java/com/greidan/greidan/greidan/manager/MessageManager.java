@@ -45,7 +45,7 @@ public class MessageManager {
         task.execute();
     }
 
-    public void fetchMessages() {
+    public void fetchMessagesByToken() {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("token", userManager.getToken())); // INSECURE
 

@@ -70,7 +70,7 @@ public class UserManager {
 
     public void logout() {
         //TODO: Invalidate session on server also?
-        prefs.edit().putString("token", "").apply();
+        prefs.edit().putString("token", "").remove("imagePath").apply();
     }
 
     public static boolean isUsernameValid(String username) {
@@ -269,7 +269,7 @@ public class UserManager {
                 if(url.equals(imageUrl)) {
                     Log.i(TAG, "Done uploading image");
                     String extFilename = null;
-                    try { extFilename = jObj.getJSONObject("file").getString("filename"); }     // TODO: path or filename?
+                    try { extFilename = jObj.getJSONObject("file").getString("filename"); }
                     catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
                     response.putString("extFilename", extFilename);

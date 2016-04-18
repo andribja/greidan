@@ -73,7 +73,7 @@
             android:layout_marginTop="20dp">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:text="@string/button_message"
                 android:id="@+id/button_message"
@@ -81,7 +81,7 @@
                 android:layout_below="@+id/image_profile"/>
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:text="@string/button_review"
                 android:id="@+id/button_review"

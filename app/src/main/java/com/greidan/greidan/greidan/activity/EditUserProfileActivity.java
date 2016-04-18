@@ -1,25 +1,25 @@
 package com.greidan.greidan.greidan.activity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.greidan.greidan.greidan.R;
-import com.greidan.greidan.greidan.RealPathUtil;
+import com.greidan.greidan.greidan.util.FileUtil;
+import com.greidan.greidan.greidan.util.RealPathUtil;
 import com.greidan.greidan.greidan.manager.UserManager;
 import com.greidan.greidan.greidan.model.User;
 
 import java.io.File;
+import java.io.IOException;
 
 public class EditUserProfileActivity extends ProgressActivity {
 
@@ -30,8 +30,9 @@ public class EditUserProfileActivity extends ProgressActivity {
 
     User user;
 
-    private String selectedImagePath;
-    File imageFile;
+    private String pendingImagePath;
+    private String imagePath;
+    private String extFilename;
 
     ImageView mImagePicker;
     EditText mUsername;
@@ -41,11 +42,17 @@ public class EditUserProfileActivity extends ProgressActivity {
     EditText mConfirmPass;
     Button mUpdateButton;
     Button mCancelButton;
+    
+    String currentUsername;
+    String currentEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
+
+        mContainerView = findViewById(R.id.edit_profile_container);
+        mProgressView = findViewById(R.id.edit_profile_progress);
 
         userManager = new UserManager(this);
 
@@ -60,8 +67,18 @@ public class EditUserProfileActivity extends ProgressActivity {
         mUpdateButton = (Button) findViewById(R.id.edit_profile_button_update);
         mCancelButton = (Button) findViewById(R.id.edit_profile_button_cancel);
 
-        mUsername.setText(user.getUsername());
-        mEmail.setText(user.getEmail());
+        String profileImagePath = userManager.getProfileImagePath();
+        if(profileImagePath != null) {
+            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(profileImagePath));
+        } else {
+            mImagePicker.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null));
+        }
+
+        currentUsername = user.getUsername();
+        currentEmail = user.getEmail();
+        
+        mUsername.setText(currentUsername);
+        mEmail.setText(currentEmail);
 
         mImagePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,22 +93,33 @@ public class EditUserProfileActivity extends ProgressActivity {
         mUpdateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(imageFile != null) {
-                    userManager.uploadImage(imageFile);
+                showProgress(true);
+                if(pendingImagePath != null) {
+                    userManager.uploadImage(new File(pendingImagePath));
+                } else {
+                    postUpdates();
                 }
             }
         });
+    }
+    
+    private void postUpdates() {
+        String username = mUsername.getText().toString();
+        String email = mEmail.getText().toString();
+
+        // TODO: passwords
+
+        userManager.postUserProfileUpdate(username, email, extFilename);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            selectedImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
+            pendingImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
 
-            Log.i(TAG, "Image path: " + selectedImagePath);
-            imageFile = new File(selectedImagePath);
+            Log.i(TAG, "Image path: " + pendingImagePath);
 
-            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(selectedImagePath));
+            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(pendingImagePath));
         }
     }
 
@@ -99,5 +127,39 @@ public class EditUserProfileActivity extends ProgressActivity {
     public void doUponCompletion(Bundle response) {
         Log.i(TAG, "doUpoonCompletion");
         Log.i(TAG, response.toString());
+
+        boolean success = response.getBoolean("success");
+        String message = response.getString("message");
+
+        if(pendingImagePath != null) {
+            // image upload not completed
+            if(message.equals("Upload successful")) {
+                // Upload successful
+                extFilename = response.getString("extFilename");
+                imagePath = pendingImagePath;
+                pendingImagePath = null;
+
+                // TODO: seperate folder for seperate user ids?
+                String localPath = getFilesDir() + "/img/profile/" + extFilename;
+
+                try {
+                    FileUtil.copyFile(imagePath, localPath);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                userManager.setProfileImagePath(localPath);
+
+                postUpdates();
+            } else {
+                // Upload unsuccessful
+                // TODO: handle this
+            }
+        } else {
+            // Image upload completed
+            Log.i(TAG, "Shit done");
+            Toast.makeText(this, "Update successful", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }

@@ -1,14 +1,13 @@
 package com.greidan.greidan.greidan.manager;
 
 import android.app.Activity;
-import android.app.job.JobInfo;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.greidan.greidan.greidan.R;
-import com.greidan.greidan.greidan.ServerRequest;
+import com.greidan.greidan.greidan.util.ServerRequest;
 import com.greidan.greidan.greidan.model.User;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
 
@@ -104,6 +103,16 @@ public class UserManager {
         return prefs.getString("username", "");
     }
 
+    public void setProfileImagePath(String path) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("imagePath", path);
+        editor.apply();
+    }
+
+    public String getProfileImagePath() {
+        return prefs.getString("imagePath", null);
+    }
+
 //    public User findUserByUsername(String username) {
 //        // TODO: Implement this; query database or contact server to find user
 //        return new User(0, username, null);
@@ -138,8 +147,14 @@ public class UserManager {
         task.execute();
     }
 
-    public void postUserProfileUpdate(User user) {
+    public void postUserProfileUpdate(String username, String email, String extImageName) {
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("email", email));
+        params.add(new BasicNameValuePair("imagePath", "user_img" + "/" + extImageName));
 
+        UserTask task = new UserTask((ProgressActivity) activity, profileUrl, params, true);
+        task.execute();
     }
 
     public void uploadImage(File imageFile) {
@@ -249,8 +264,13 @@ public class UserManager {
             }
 
             if(post) {
-                if(url.equals(profileUrl)) {
-                    // For when posting profile updates
+                if(url.equals(imageUrl)) {
+                    Log.i(TAG, "Done uploading image");
+                    String extFilename = null;
+                    try { extFilename = jObj.getJSONObject("file").getString("filename"); }     // TODO: path or filename?
+                    catch (JSONException | NullPointerException e) { e.printStackTrace(); }
+
+                    response.putString("extFilename", extFilename);
                 } else {
                     if (success) {
                         try {
@@ -265,9 +285,9 @@ public class UserManager {
                             e.printStackTrace();
                         }
                     }
-
-                    activity.doUponCompletion(response);
                 }
+
+                activity.doUponCompletion(response);
             } else {
                 handleRequestedData(jObj, response);
             }

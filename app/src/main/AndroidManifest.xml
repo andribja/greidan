@@ -71,7 +71,8 @@
             android:label="New review" />
         <activity
             android:name=".activity.UserAdListActivity"
-            android:label="User ads"></activity>
+            android:label="User ads" />
+        <activity android:name=".activity.MessageViewActivity"></activity>
     </application>
 
 </manifest>

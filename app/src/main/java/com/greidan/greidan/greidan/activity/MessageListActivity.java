@@ -1,11 +1,13 @@
 package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -38,6 +40,17 @@ public class MessageListActivity extends ProgressActivity {
         mMessageManager = new MessageManager(this);
 
         mListView = (ListView) findViewById(R.id.message_list);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MessageListActivity.this, MessageViewActivity.class);
+                Bundle bundle = new Bundle();
+                String messageID = (String) view.getTag();
+                bundle.putParcelable("message", messages.get(messageID));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         showProgress(true);
         mMessageManager.fetchMessagesByToken();

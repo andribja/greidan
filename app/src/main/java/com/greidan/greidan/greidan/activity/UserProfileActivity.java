@@ -52,7 +52,7 @@ public class UserProfileActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        String username = getIntent().getStringExtra("username");
+        final String username = getIntent().getStringExtra("username");
 
         userManager = new UserManager(this);
         //userManager.fetchUserProfileByUsername(username);
@@ -72,6 +72,14 @@ public class UserProfileActivity extends ProgressActivity {
             }
         });
         mAddReviewButton = (Button) findViewById((R.id.button_review));
+        mAddReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(UserProfileActivity.this, NewReviewActivity.class);
+                intent.putExtra("revieweeName", username);
+                startActivity(intent);
+            }
+        });
 
         mReviewList = (ListView) findViewById(R.id.review_list);
         mReviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -81,13 +89,13 @@ public class UserProfileActivity extends ProgressActivity {
             }
         });
 
-        // TODO: get reviews from server
-        ArrayList<Review> foo = new ArrayList<>();
-        foo.add(new Review("asdf", "foo", "bar", 4.5, new Date()));
-        foo.add(new Review("fdsa", "oof", "foo", 1, new Date()));
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("reviewlist", foo);
-        doUponCompletion(bundle);
+//        // TODO: get reviews from server
+//        ArrayList<Review> foo = new ArrayList<>();
+//        foo.add(new Review("asdf", "foo", "bar", 4.5, new Date()));
+//        foo.add(new Review("fdsa", "oof", "foo", 1, new Date()));
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelableArrayList("reviewlist", foo);
+//        doUponCompletion(bundle);
     }
 
     @Override
@@ -177,7 +185,7 @@ public class UserProfileActivity extends ProgressActivity {
             TextView title = (TextView) convertView.findViewById(R.id.review_item_title);
             RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.review_item_rating);
 
-            title.setText(review.getTitle());
+            title.setText(review.getContent());
             ratingBar.setRating((float) review.getRating());
 
             convertView.setTag(review.getId());

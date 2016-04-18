@@ -68,7 +68,7 @@ public class Review implements Parcelable {
     public List<NameValuePair> getAsRequestParams() {
         List<NameValuePair> params = new ArrayList<>();
 
-        params.add(new BasicNameValuePair("id", id));
+        params.add(new BasicNameValuePair("_id", id));
         params.add(new BasicNameValuePair("stars", Double.toString(rating)));
         params.add(new BasicNameValuePair("content", content));
         params.add(new BasicNameValuePair("revieweeName", revieweeName));

@@ -23,11 +23,16 @@ public class ReviewManager {
 
     private static final String TAG = "ReviewManager";
 
+    UserManager userManager;
+
     private String reviewUrl;
 
     Activity activity;
 
     public ReviewManager(Activity activity) {
+        this.activity = activity;
+        userManager = new UserManager(activity);
+
         if(activity != null) {
             String host = activity.getString(R.string.host);
             String port = activity.getString(R.string.port);
@@ -46,6 +51,7 @@ public class ReviewManager {
 
     public void postReviewToServer(Review review) {
         List<NameValuePair> params = review.getAsRequestParams();
+        params.add(new BasicNameValuePair("token" ,userManager.getToken()));
 
         ReviewTask task = new ReviewTask((ProgressActivity) activity, reviewUrl, true, params);
         task.execute();
@@ -85,12 +91,12 @@ public class ReviewManager {
             String message = "";
             boolean success = false;
 
-            Bundle data = new Bundle();
+            Bundle response = new Bundle();
 
             if(jObj == null) {
                 Log.e(TAG, "Json object is null");
-                data.putBoolean("error", true);
-                data.putString("message", "An error occurred");
+                response.putBoolean("error", true);
+                response.putString("message", "An error occurred");
             } else {
                 Log.i(TAG, "Got back:" + jObj.toString());
 
@@ -100,12 +106,13 @@ public class ReviewManager {
                 try { message = jObj.getString("response"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
-                data.putBoolean("success", success);
-                data.putString("message", message);
+                response.putBoolean("success", success);
+                response.putString("message", message);
             }
 
             if(post) {
                 // do after post
+                activity.doUponCompletion(response);
             } else {
                 // do after get
             }

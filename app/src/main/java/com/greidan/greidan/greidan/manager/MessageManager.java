@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.greidan.greidan.greidan.model.Message;
 import com.greidan.greidan.greidan.R;
-import com.greidan.greidan.greidan.ServerRequest;
+import com.greidan.greidan.greidan.util.ServerRequest;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
 
 import org.apache.http.NameValuePair;

@@ -12,7 +12,7 @@ import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.DbHelper;
 import com.greidan.greidan.greidan.DbSchema;
 import com.greidan.greidan.greidan.R;
-import com.greidan.greidan.greidan.ServerRequest;
+import com.greidan.greidan.greidan.util.ServerRequest;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
 
 import org.apache.http.NameValuePair;
@@ -260,7 +260,7 @@ public class AdManager {
             if(post) {
                 if(file != null) {
                     String extFilename = null;
-                    try { extFilename = jObj.getJSONObject("file").getString("path"); }     // TODO: path or filename?
+                    try { extFilename = jObj.getJSONObject("file").getString("filename"); }     // TODO: path or filename?
                     catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
                     data.putString("extFilename", extFilename);

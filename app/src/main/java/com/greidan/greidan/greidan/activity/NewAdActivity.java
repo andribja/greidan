@@ -121,9 +121,9 @@ public class NewAdActivity extends LocationActivity {
 //            imagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
             pendingImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
 
-            Log.i(TAG, "Image path: " + imagePath);
+            Log.i(TAG, "Image path: " + pendingImagePath);
 
-            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+            mImagePicker.setImageBitmap(BitmapFactory.decodeFile(pendingImagePath));
 //            addImage(imagePath);
         }
     }
@@ -151,8 +151,8 @@ public class NewAdActivity extends LocationActivity {
         showProgress(true);
         newAd = new Ad("", title, content, category, mUserManager.getLoggedInUsername(), new Date(), location);
 
-        if(imagePath != null) {
-            mAdManager.uploadImage(new File(imagePath));
+        if(pendingImagePath != null) {
+            mAdManager.uploadImage(new File(pendingImagePath));
         } else {
             mAdManager.postAdToServer(newAd);
         }

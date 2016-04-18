@@ -39,9 +39,15 @@ public class User implements Parcelable {
         this.id = jObj.getString("_id");
         this.username = jObj.getString("username");
         this.email = jObj.getString("email");
-        this.timeJoined = new Date(jObj.getLong("timeJoined"));
-        this.extImagePath = jObj.getString("imgPath");
-        this.rating = jObj.getDouble("rating");
+        this.timeJoined = new Date(jObj.getLong("time_joined"));
+        if(jObj.has("imgPath")) {
+            this.extImagePath = jObj.getString("imgPath");
+        }
+        if(jObj.has("rating")) {
+            this.rating = jObj.getDouble("rating");
+        } else {
+            this.rating = 0;
+        }
     }
 
     public String getUsername() {

@@ -54,12 +54,13 @@ public class UserProfileActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        String username = getIntent().getStringExtra("username");
         user = new User();
-        user.setUsername(getIntent().getStringExtra("username"));
+        user.setUsername(username);
 
         reviewManager = new ReviewManager(this);
         userManager = new UserManager(this);
-        //userManager.fetchUserProfileByUsername(username);
+        userManager.fetchUserProfileByUsername(username);
 
         mImageView = (ImageView) findViewById(R.id.image_profile);
         mUsernameView = (TextView) findViewById(R.id.label_username);
@@ -92,17 +93,6 @@ public class UserProfileActivity extends ProgressActivity {
                 Log.i(TAG, "You clicked somthing");
             }
         });
-
-        reviewManager.fetchReviewsForUsername(user.getUsername());
-
-
-//        // TODO: get reviews from server
-//        ArrayList<Review> foo = new ArrayList<>();
-//        foo.add(new Review("asdf", "foo", "bar", 4.5, new Date()));
-//        foo.add(new Review("fdsa", "oof", "foo", 1, new Date()));
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelableArrayList("reviewlist", foo);
-//        doUponCompletion(bundle);
     }
 
     @Override
@@ -138,11 +128,8 @@ public class UserProfileActivity extends ProgressActivity {
             mReviewList.setAdapter(new ReviewAdapter(this, reviewList));
         }
 
-        if(response.containsKey("users")) {
-            // Temporary until users can be retrieved from server
-//            List<User> userList = response.getParcelableArrayList("userlist");
-            List<User> userList = new ArrayList<>();
-            userList.add(new User("123", "foobar", "foo@bar.com", new Date(), 3.5));
+        if(response.containsKey("userlist")) {
+            List<User> userList = response.getParcelableArrayList("userlist");
             if(userList.size() ==1) {
                 user = userList.get(0);
 

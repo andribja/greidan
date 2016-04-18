@@ -163,6 +163,7 @@ public class UserManager {
     }
 
     private void handleRequestedData(JSONObject jObj, Bundle response) {
+        Log.i(TAG, "handleRequestedData: + " + jObj);
 
         if(jObj != null) {
             Iterator<?> keys = jObj.keys();
@@ -174,12 +175,13 @@ public class UserManager {
                     try {
                         JSONArray jArr = jObj.getJSONArray(key);
                         for(int i=0; i<jArr.length(); i++) {
+                            Log.i(TAG, jArr.getJSONObject(i).toString());
                             users.add(new User(jArr.getJSONObject(i)));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    response.putParcelableArrayList("users", users);
+                    response.putParcelableArrayList("userlist", users);
                 }
 
                 if(key.equals("user")) {

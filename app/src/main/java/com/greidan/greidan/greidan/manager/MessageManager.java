@@ -3,6 +3,7 @@ package com.greidan.greidan.greidan.manager;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.greidan.greidan.greidan.model.Message;
 import com.greidan.greidan.greidan.R;
@@ -44,9 +45,9 @@ public class MessageManager {
         task.execute();
     }
 
-    public void fetchMessages(String id) {
+    public void fetchMessages() {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-        requestParams.add(new BasicNameValuePair("recipient_id", id));
+        requestParams.add(new BasicNameValuePair("token", userManager.getToken())); // INSECURE
 
         ServerTask task = new ServerTask((ProgressActivity) activity, messageUrl, false, requestParams);
         task.execute();
@@ -104,6 +105,8 @@ public class MessageManager {
         @Override
         protected void onPostExecute(JSONObject jObj) {
             Bundle data = new Bundle();
+
+            Log.i("MessageManager", "Got back: " + jObj);
 
             if(post) {
                 Boolean success = false;

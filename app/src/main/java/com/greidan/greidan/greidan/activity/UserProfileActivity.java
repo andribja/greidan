@@ -73,6 +73,7 @@ public class UserProfileActivity extends ProgressActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, NewMessageActivity.class);
+                intent.putExtra("recipientName", user.getUsername());
                 startActivity(intent);
             }
         });

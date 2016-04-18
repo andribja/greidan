@@ -2,6 +2,7 @@ package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,23 +39,13 @@ public class MessageListActivity extends ProgressActivity {
 
         mListView = (ListView) findViewById(R.id.message_list);
 
-        // TODO: Ætti að taka inn logged in user id til að ná í skilaboð notandans
-        //mMessageManager.fetchMessages("belja");
-
-        ArrayList<Message> foo = new ArrayList<>();
-        foo.add(new Message("1337", "Yo sup", "Hestur", "13", "31", "jobbi", new Date()));
-        foo.add(new Message("137", "Subject", "Content", "13", "31", "dylan", new Date()));
-        foo.add(new Message("1337", "what's dylan grillin?", "Hestur", "13", "31", "grillin", new Date()));
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("messages", foo);
-        doUponCompletion(bundle);
-
+        showProgress(true);
+        mMessageManager.fetchMessages();
     }
 
     public void doUponCompletion(Bundle data) {
         List<Message> messages = data.getParcelableArrayList("messages");
         populateMessageList(messages);
-
 
         if(data.getBoolean("error")) {
             Toast.makeText(this, "Connection failed", Toast.LENGTH_SHORT).show();

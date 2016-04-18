@@ -20,9 +20,9 @@
     <string-array name="main_sidebar_items">
         <item>Prófíll</item>
         <item>Mínar auglýsingar</item>
-        <item>Skilaboð</item>
-        <item>blabla</item>
-        <item>foobar</item>
+        <item>Mín skilaboð</item>
+        <item>Leita</item>
+        <item>Stillingar</item>
     </string-array>
 
     <!-- Strings related to login -->

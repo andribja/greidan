@@ -21,8 +21,7 @@ public class Message implements Parcelable {
     String id;
     String subject;
     String content;
-    String recipientId;
-    String authorId;
+    String recipientName;
     String authorName;
     Date timePosted;
 
@@ -30,12 +29,11 @@ public class Message implements Parcelable {
 
     }
 
-    public Message(String id, String subject, String content, String recipientId, String authorId, String authorName, Date timePosted) {
+    public Message(String id, String subject, String content, String recipientName, String authorName, Date timePosted) {
         this.id = id;
         this.subject = subject;
         this.content = content;
-        this.recipientId = recipientId;
-        this.authorId = authorId;
+        this.recipientName = recipientName;
         this.authorName = authorName;
         this.timePosted = timePosted;
     }
@@ -46,8 +44,7 @@ public class Message implements Parcelable {
         this.id = jsonMessage.getString("_id");
         this.subject = jsonMessage.getString("subject");
         this.content = jsonMessage.getString("content");
-        this.recipientId = jsonMessage.getString("recipient_id");
-        this.authorId = jsonMessage.getString("author_id");
+        this.recipientName = jsonMessage.getString("recipient_name");
         this.authorName = jsonMessage.getString("author_name");
         this.timePosted = new Date(jsonMessage.getLong("timePosted"));
     }
@@ -58,8 +55,8 @@ public class Message implements Parcelable {
         values.put(DbSchema.MessageTable.Cols.ID, id);
         values.put(DbSchema.MessageTable.Cols.SUBJECT, subject);
         values.put(DbSchema.MessageTable.Cols.CONTENT, content);
-        values.put(DbSchema.MessageTable.Cols.AUTHOR_ID, authorId);
-        values.put(DbSchema.MessageTable.Cols.RECIPIENT_ID, recipientId);
+//        values.put(DbSchema.MessageTable.Cols.AUTHOR_ID, authorId);
+//        values.put(DbSchema.MessageTable.Cols.RECIPIENT_ID, recipientId);
         values.put(DbSchema.MessageTable.Cols.AUTHOR_NAME, authorName);
         values.put(DbSchema.MessageTable.Cols.TIME_POSTED, timePosted.toString());
 
@@ -70,8 +67,7 @@ public class Message implements Parcelable {
         ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
         requestParams.add(new BasicNameValuePair("subject", subject));
         requestParams.add(new BasicNameValuePair("content", content));
-        requestParams.add(new BasicNameValuePair("author_id", authorId));
-        requestParams.add(new BasicNameValuePair("recipient_id", recipientId));
+        requestParams.add(new BasicNameValuePair("recipient_name", recipientName));
 
         return requestParams;
     }
@@ -89,8 +85,7 @@ public class Message implements Parcelable {
         dest.writeString(id);
         dest.writeString(subject);
         dest.writeString(content);
-        dest.writeString(authorId);
-        dest.writeString(recipientId);
+        dest.writeString(recipientName);
         dest.writeString(timePosted.toString());
     }
 
@@ -101,8 +96,7 @@ public class Message implements Parcelable {
         subject = in.readString();
         content = in.readString();
         authorName = in.readString();
-        authorId = in.readString();
-        recipientId = in.readString();
+        recipientName = in.readString();
         timePosted = new Date(in.readLong());
     }
 
@@ -140,14 +134,6 @@ public class Message implements Parcelable {
         return authorName;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public String getRecipientId() {
-        return recipientId;
-    }
-
     public Date getTimePosted() {
         return timePosted;
     }
@@ -164,12 +150,20 @@ public class Message implements Parcelable {
         this.content = content;
     }
 
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public void setRecipient(String recipientId) {
-        this.recipientId = recipientId;
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public void setTimePosted(Date timePosted) {

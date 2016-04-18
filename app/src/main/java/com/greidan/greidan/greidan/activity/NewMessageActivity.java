@@ -12,6 +12,7 @@ import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.MessageManager;
 import com.greidan.greidan.greidan.manager.UserManager;
 import com.greidan.greidan.greidan.model.Message;
+import com.greidan.greidan.greidan.model.User;
 
 import java.util.Date;
 
@@ -25,6 +26,7 @@ public class NewMessageActivity extends ProgressActivity {
     Button mButtonPost;
 
     Message newMessage;
+    String recipientName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class NewMessageActivity extends ProgressActivity {
 
         mMessageManager = new MessageManager(this);
         mUserManager = new UserManager(this);
+
+        recipientName = getIntent().getStringExtra("recipientName");
 
         mSubject = (EditText) findViewById(R.id.new_message_subject);
         mContent = (EditText) findViewById(R.id.new_message_content);
@@ -56,7 +60,7 @@ public class NewMessageActivity extends ProgressActivity {
     private void attemptPostMessage(String subject, String content) {
         showProgress(true);
         // TODO: Feed the message correct information about users
-        newMessage = new Message("0", subject, content, "1337", "7331", mUserManager.getLoggedInUsername(), new Date());
+        newMessage = new Message(null, subject, content, recipientName, mUserManager.getLoggedInUsername(), new Date());
         mMessageManager.postMessageToServer(newMessage);
     }
 
@@ -74,9 +78,6 @@ public class NewMessageActivity extends ProgressActivity {
 
         if(success) {
             newMessage.setId(id);
-            // TODO: Make it so you return to user's profile
-            Intent intent = new Intent(this, NewMessageActivity.class);
-            startActivity(intent);
             finish();
         }
     }

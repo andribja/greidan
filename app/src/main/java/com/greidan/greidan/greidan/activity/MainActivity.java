@@ -79,6 +79,7 @@ public class MainActivity extends ProgressActivity {
                 switch (position) {
                     case 0:
                         intent = new Intent(ctx, UserProfileActivity.class);
+                        intent.putExtra("username", userManager.getLoggedInUsername());
                         break;
                     case 2:
                         intent = new Intent(ctx, MessageListActivity.class);

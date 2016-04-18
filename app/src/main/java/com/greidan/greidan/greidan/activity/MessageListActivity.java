@@ -31,6 +31,9 @@ public class MessageListActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
 
+        mContainerView = findViewById(R.id.message_list_container);
+        mProgressView = findViewById(R.id.message_list_progress);
+
         mMessageManager = new MessageManager(this);
 
         mListView = (ListView) findViewById(R.id.message_list);

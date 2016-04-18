@@ -9,10 +9,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.greidan.greidan.greidan.activity.MessageListActivity">
 
+    <ProgressBar
+        android:id="@+id/message_list_progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/message_list_container">
 
         <ListView
             android:layout_width="match_parent"
@@ -20,6 +31,5 @@
             android:id="@+id/message_list" />
 
     </LinearLayout>
-
 
 </RelativeLayout>

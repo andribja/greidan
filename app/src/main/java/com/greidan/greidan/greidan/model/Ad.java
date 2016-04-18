@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.greidan.greidan.greidan.DbSchema;
 import com.greidan.greidan.greidan.manager.UserManager;
@@ -56,6 +57,10 @@ public class Ad implements Parcelable {
         JSONArray loc = jsonAd.getJSONArray("loc");
         this.location.setLatitude(loc.getDouble(0));
         this.location.setLongitude(loc.getDouble(0));
+
+        if(jsonAd.has("imgPath")) {
+            this.extFilename = jsonAd.getString("imgPath");
+        }
     }
 
     public ContentValues getContentValues() {

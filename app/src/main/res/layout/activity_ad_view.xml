@@ -51,6 +51,22 @@
             android:layout_height="wrap_content"
             android:text="content"
             android:id="@+id/ad_view_content"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/ad_view_image_layout">
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
     </LinearLayout>
 </RelativeLayout>

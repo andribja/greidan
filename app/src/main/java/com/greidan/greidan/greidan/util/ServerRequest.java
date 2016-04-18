@@ -1,6 +1,7 @@
 package com.greidan.greidan.greidan.util;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,14 +49,16 @@ public class ServerRequest {
         HttpPost httpPost = new HttpPost(url);
         httpPost.setEntity(multipartEntity.build());
 
-        return executeRequest(httpPost);
+        return executeJsonRequest(httpPost);
     }
 
     public JSONObject getFromUrl(String url, List<NameValuePair> params) {
-        String encodedUrl = url + "/?" + URLEncodedUtils.format(params, "utf-8");
+        String encodedUrl = url;
+        try { encodedUrl += "/?" + URLEncodedUtils.format(params, "utf-8"); }
+        catch (NullPointerException e) { e.printStackTrace(); }
         HttpGet httpGet = new HttpGet(encodedUrl);
 
-        return executeRequest(httpGet);
+        return executeJsonRequest(httpGet);
     }
 
     public JSONObject postToUrl(String url, List<NameValuePair> params) {
@@ -66,10 +69,15 @@ public class ServerRequest {
             e.printStackTrace();
         }
 
-        return executeRequest(httpPost);
+        return executeJsonRequest(httpPost);
     }
 
-    public JSONObject executeRequest(HttpRequestBase requestBase) {
+    public byte[] getBytesFromUrl(String url) {
+        HttpGet httpGet = new HttpGet(url);
+        return executeByteRequest(httpGet);
+    }
+
+    private InputStream getInputStream(HttpRequestBase requestBase) {
         HttpParams params = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
 
@@ -87,9 +95,32 @@ public class ServerRequest {
             e.printStackTrace();
         }
 
+        return is;
+    }
+
+    public byte[] executeByteRequest(HttpRequestBase requestBase) {
+        is = getInputStream(requestBase);
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "utf-8"), 8);
+            int bytesRead = 0;
+            byte[] buffer = new byte[1024];
+            while((bytesRead = is.read(buffer)) > 0) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return os.toByteArray();
+    }
+
+    public JSONObject executeJsonRequest(HttpRequestBase requestBase) {
+        is = getInputStream(requestBase);
+
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"), 8);
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {

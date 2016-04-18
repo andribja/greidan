@@ -37,7 +37,9 @@ public class AdManager {
     Activity activity;
 
     String adUrl;
+    String imageUploadUrl;
     String imageUrl;
+    
 
     public AdManager(Activity activity) {
         this.activity = activity;
@@ -49,7 +51,8 @@ public class AdManager {
             String port = activity.getString(R.string.port);
 
             adUrl = host + ":" + port + "/ad";
-            imageUrl = host + ":" + port + "/uploadAdImg";
+            imageUploadUrl = host + ":" + port + "/uploadAdImg";
+            imageUrl = host + ":" + port + "/ad_img";
         }
     }
 
@@ -162,11 +165,17 @@ public class AdManager {
     }
 
     public void uploadImage(File imageFile) {
-        ServerTask task = new ServerTask((ProgressActivity) activity, imageUrl, "image", imageFile, "image/jpeg");
+        ServerTask task = new ServerTask((ProgressActivity) activity, imageUploadUrl, "image", imageFile, "image/jpeg");
         task.execute();
     }
 
-    private void handleRequestedData(JSONObject jObj, Bundle data) {
+    public void fetchImageBytes(String filename) {
+        String url = imageUrl + "/" + filename;
+        BytesTask task = new BytesTask((ProgressActivity) activity, url, null);
+        task.execute();
+    }
+
+    private void handleRequestedData(JSONObject jObj, Bundle response) {
         ArrayList<Ad> ads = new ArrayList<Ad>();
 
         if(jObj != null) {
@@ -187,8 +196,38 @@ public class AdManager {
             }
         }
 
-        data.putParcelableArrayList("ads", ads);
-        ((ProgressActivity) activity).doUponCompletion(data);
+        response.putParcelableArrayList("ads", ads);
+        ((ProgressActivity) activity).doUponCompletion(response);
+    }
+
+    private class BytesTask extends AsyncTask<Void, Void, byte[]> {
+
+        ProgressActivity activity;
+        String url;
+        List<NameValuePair> requestParams;
+
+        public BytesTask(ProgressActivity activity, String url, List<NameValuePair> params) {
+            this.activity = activity;
+            this.url = url;
+            this.requestParams = params;
+        }
+
+        @Override
+        protected byte[] doInBackground(Void... params) {
+            ServerRequest request = new ServerRequest();
+
+            return request.getBytesFromUrl(url);
+        }
+
+        @Override
+        protected void onPostExecute(byte[] bytes) {
+            Log.i("BytesTask", "Received " + bytes.length);
+
+            Bundle response = new Bundle();
+            response.putByteArray("bytes", bytes);
+
+            activity.doUponCompletion(response);
+        }
     }
 
     private class ServerTask extends AsyncTask<Void, Void, JSONObject> {

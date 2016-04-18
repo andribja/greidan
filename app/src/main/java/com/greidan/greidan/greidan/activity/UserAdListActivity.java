@@ -1,11 +1,13 @@
 package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UserAdListActivity extends ProgressActivity {
+    // This is basically a copy of AdListActivity minus the location slider
+    // Maybe consider reusing components?
 
     AdManager mAdManager;
     UserManager mUserManager;
@@ -36,6 +40,17 @@ public class UserAdListActivity extends ProgressActivity {
         mProgressView = findViewById(R.id.user_ad_list_progress);
 
         mAdList = (ListView) findViewById(R.id.user_ad_list);
+        mAdList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(UserAdListActivity.this, AdViewActivity.class);
+                Bundle bundle = new Bundle();
+                String adID = (String) view.getTag();
+                bundle.putParcelable("ad", ads.get(adID));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         mAdManager = new AdManager(this);
         mUserManager = new UserManager(this);

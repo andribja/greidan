@@ -30,7 +30,7 @@ public class AdListActivity extends LocationActivity {
 
     private static final String TAG = "AdListActivity";
 
-    private static final int MIN_ACCURACY = 20;
+    private static final int MIN_ACCURACY = 30;
     private static final int UPDATE_TIMEOUT = 10000;
     private static final int MIN_FRESHNESS = 60*60*1000;
     private static final int UPDATE_INTERVAL = 3000;

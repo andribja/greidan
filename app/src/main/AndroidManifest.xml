@@ -17,7 +17,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name">
@@ -27,7 +26,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.AdListActivity"
             android:label="@string/title_activity_ad_list"
@@ -36,7 +34,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.NewAdActivity"
             android:label="@string/title_activity_new_ad"
@@ -45,11 +42,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-
         <activity
             android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login" />
-
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register"
@@ -58,20 +53,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.LoginActivity" />
         </activity>
-
         <activity android:name=".activity.AdViewActivity" />
-
         <activity
             android:name=".activity.UserProfileActivity"
-            android:label="Profile"></activity>
-
+            android:label="Profile" />
         <activity
             android:name=".activity.EditUserProfileActivity"
-            android:label="Edit profile"></activity>
-
+            android:label="Edit profile" />
         <activity
             android:name=".activity.NewMessageActivity"
-            android:label="New message"></activity>
+            android:label="Semja skilaboð" />
+        <activity
+            android:name=".activity.MessageListActivity"
+            android:label="Skilaboð"/>
     </application>
 
 </manifest>

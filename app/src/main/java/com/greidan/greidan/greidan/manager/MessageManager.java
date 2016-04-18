@@ -44,7 +44,15 @@ public class MessageManager {
         task.execute();
     }
 
-    public void handleRequestedData(JSONObject jObj) {
+    public void fetchMessages(String id) {
+        ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
+        requestParams.add(new BasicNameValuePair("recipient_id", id));
+
+        ServerTask task = new ServerTask((ProgressActivity) activity, messageUrl, false, requestParams);
+        task.execute();
+    }
+
+    public void handleRequestedData(JSONObject jObj, Bundle data) {
         ArrayList<Message> messages = new ArrayList<Message>();
 
         if(jObj != null) {
@@ -64,6 +72,9 @@ public class MessageManager {
                 }
             }
         }
+
+        data.putParcelableArrayList("messages", messages);
+        ((ProgressActivity) activity).doUponCompletion(data);
     }
 
     private class ServerTask extends AsyncTask<Void, Void, JSONObject> {
@@ -92,6 +103,8 @@ public class MessageManager {
 
         @Override
         protected void onPostExecute(JSONObject jObj) {
+            Bundle data = new Bundle();
+
             if(post) {
                 Boolean success = false;
                 String message = "";
@@ -106,13 +119,13 @@ public class MessageManager {
                 try { message = jObj.getString("response"); }
                 catch (JSONException | NullPointerException e) { e.printStackTrace(); }
 
-                Bundle data = new Bundle();
+
                 data.putBoolean("success", success);
                 data.putString("message", message);
                 data.putLong("id", id);
                 activity.doUponCompletion(data);
             } else {
-                handleRequestedData(jObj);
+                handleRequestedData(jObj, data);
             }
         }
     }

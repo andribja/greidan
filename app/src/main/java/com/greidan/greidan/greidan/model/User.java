@@ -23,6 +23,10 @@ public class User implements Parcelable {
     String localImagePath;
     double rating;
 
+    public User() {
+
+    }
+
     public User(String id, String username, String email, Date timeJoined, double rating) {
         this.id = id;
         this.username = username;

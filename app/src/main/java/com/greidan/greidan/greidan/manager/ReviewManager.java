@@ -8,16 +8,21 @@ import android.util.Log;
 import com.greidan.greidan.greidan.DbHelper;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
+import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.model.Review;
 import com.greidan.greidan.greidan.util.ServerRequest;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.jar.Attributes;
 
 public class ReviewManager {
 
@@ -49,6 +54,14 @@ public class ReviewManager {
         task.execute();
     }
 
+    public void fetchReviewsForUsername(String username) {
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("reviewee_name", username));
+
+        ReviewTask task = new ReviewTask((ProgressActivity) activity, reviewUrl, false, params);
+        task.execute();
+    }
+
     public void postReviewToServer(Review review) {
         List<NameValuePair> params = review.getAsRequestParams();
         params.add(new BasicNameValuePair("token" ,userManager.getToken()));
@@ -59,6 +72,28 @@ public class ReviewManager {
 
     private void handleRequestedData(JSONObject jObj, Bundle response) {
         // TODO: Parse json and call activity.doUponCompletion()
+        ArrayList<Review> reviews = new ArrayList<>();
+
+        if(jObj != null) {
+            Iterator<?> keys = jObj.keys();
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+
+                if(key.equals("reviewlist")) {
+                    try {
+                        JSONArray jArr = jObj.getJSONArray(key);
+                        for(int i=0; i<jArr.length(); i++) {
+                            reviews.add(new Review(jArr.getJSONObject(i)));
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+        response.putParcelableArrayList("reviewlist", reviews);
+        ((ProgressActivity) activity).doUponCompletion(response);
     }
 
     private class ReviewTask extends AsyncTask<Void, Void, JSONObject> {
@@ -115,6 +150,7 @@ public class ReviewManager {
                 activity.doUponCompletion(response);
             } else {
                 // do after get
+                handleRequestedData(jObj, response);
             }
         }
     }

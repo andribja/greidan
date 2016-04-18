@@ -60,8 +60,8 @@ public class Review implements Parcelable {
         this.id = jObj.getString("_id");
         this.rating = jObj.getDouble("stars");
         this.content = jObj.getString("content");
-        this.revieweeName = jObj.getString("revieweeName");
-        this.authorName = jObj.getString("authorName");
+        this.revieweeName = jObj.getString("reviewee_name");
+        this.authorName = jObj.getString("author_name");
         this.timePosted = new Date(jObj.getLong("timePosted"));
     }
 
@@ -71,8 +71,8 @@ public class Review implements Parcelable {
         params.add(new BasicNameValuePair("_id", id));
         params.add(new BasicNameValuePair("stars", Double.toString(rating)));
         params.add(new BasicNameValuePair("content", content));
-        params.add(new BasicNameValuePair("revieweeName", revieweeName));
-        params.add(new BasicNameValuePair("authorName", authorName));
+        params.add(new BasicNameValuePair("reviewee_name", revieweeName));
+        params.add(new BasicNameValuePair("author_name", authorName));
 
         return params;
     }

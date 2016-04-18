@@ -20,6 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.greidan.greidan.greidan.R;
+import com.greidan.greidan.greidan.manager.ReviewManager;
 import com.greidan.greidan.greidan.manager.UserManager;
 import com.greidan.greidan.greidan.model.Review;
 import com.greidan.greidan.greidan.model.User;
@@ -33,6 +34,7 @@ public class UserProfileActivity extends ProgressActivity {
 
     private static final String TAG = "UserProfileActivity";
 
+    ReviewManager reviewManager;
     UserManager userManager;
 
     User user;
@@ -52,8 +54,10 @@ public class UserProfileActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        final String username = getIntent().getStringExtra("username");
+        user = new User();
+        user.setUsername(getIntent().getStringExtra("username"));
 
+        reviewManager = new ReviewManager(this);
         userManager = new UserManager(this);
         //userManager.fetchUserProfileByUsername(username);
 
@@ -76,7 +80,7 @@ public class UserProfileActivity extends ProgressActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(UserProfileActivity.this, NewReviewActivity.class);
-                intent.putExtra("revieweeName", username);
+                intent.putExtra("revieweeName", user.getUsername());
                 startActivity(intent);
             }
         });
@@ -88,6 +92,9 @@ public class UserProfileActivity extends ProgressActivity {
                 Log.i(TAG, "You clicked somthing");
             }
         });
+
+        reviewManager.fetchReviewsForUsername(user.getUsername());
+
 
 //        // TODO: get reviews from server
 //        ArrayList<Review> foo = new ArrayList<>();
@@ -109,24 +116,29 @@ public class UserProfileActivity extends ProgressActivity {
         } else {
             mImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null));
         }
+
+        reviewManager.fetchReviewsForUsername(user.getUsername());
     }
 
     @Override
     public void doUponCompletion(Bundle response) {
         Log.i(TAG, "doUponCompletion");
+        Log.i(TAG, "Got: " + response);
 
         if(response.containsKey("reviewlist")) {
             List<Review> reviewList = response.getParcelableArrayList("reviewlist");
+            Log.i(TAG, "reviewList=" + reviewList);
 
             reviews = new HashMap<>();
             for(Review review: reviewList) {
+                Log.i(TAG, review.getContent());
                 reviews.put(review.getId(), review);
             }
 
             mReviewList.setAdapter(new ReviewAdapter(this, reviewList));
         }
 
-        if(response.containsKey("users") || true) {
+        if(response.containsKey("users")) {
             // Temporary until users can be retrieved from server
 //            List<User> userList = response.getParcelableArrayList("userlist");
             List<User> userList = new ArrayList<>();

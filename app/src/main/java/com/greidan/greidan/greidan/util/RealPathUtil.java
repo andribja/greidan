@@ -1,4 +1,4 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.greidan.greidan.greidan;
+package com.greidan.greidan.greidan.util;
 
 import java.io.BufferedReader;
 import java.io.File;

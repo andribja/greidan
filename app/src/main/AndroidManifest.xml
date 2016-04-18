@@ -65,7 +65,10 @@
             android:label="Semja skilaboð" />
         <activity
             android:name=".activity.MessageListActivity"
-            android:label="Skilaboð"/>
+            android:label="Skilaboð" />
+        <activity
+            android:name=".activity.NewReviewActivity"
+            android:label="New review"></activity>
     </application>
 
 </manifest>

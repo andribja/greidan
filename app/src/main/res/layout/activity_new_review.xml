@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Skrifa umsögn fyrir notandann foobar"
+            android:text="@string/new_review_label"
             android:id="@+id/new_reviewee_label"
             android:layout_marginBottom="20dp"/>
 

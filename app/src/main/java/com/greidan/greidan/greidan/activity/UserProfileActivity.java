@@ -39,6 +39,7 @@ public class UserProfileActivity extends ProgressActivity {
 
     User user;
     HashMap<String, Review> reviews;
+    String username;
 
     ImageView mImageView;
     TextView mUsernameView;
@@ -54,7 +55,7 @@ public class UserProfileActivity extends ProgressActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        String username = getIntent().getStringExtra("username");
+        username = getIntent().getStringExtra("username");
         user = new User();
         user.setUsername(username);
 
@@ -86,6 +87,11 @@ public class UserProfileActivity extends ProgressActivity {
                 startActivity(intent);
             }
         });
+
+        if(username.equals(userManager.getLoggedInUsername())) {
+            mSendMessageButton.setVisibility(View.GONE);
+            mAddReviewButton.setVisibility(View.GONE);
+        }
 
         mReviewList = (ListView) findViewById(R.id.review_list);
         mReviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -144,8 +150,11 @@ public class UserProfileActivity extends ProgressActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.user_profile, menu);
+        if(username.equals(userManager.getLoggedInUsername())) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.user_profile, menu);
+        }
+
         return true;
     }
 

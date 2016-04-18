@@ -19,13 +19,14 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.greidan.greidan.greidan.RealPathUtil;
+import com.greidan.greidan.greidan.util.RealPathUtil;
 import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.manager.AdManager;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.UserManager;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,6 +54,7 @@ public class NewAdActivity extends LocationActivity {
 
     Ad newAd;
     String imagePath;
+    String pendingImagePath;
     List<String> imagePaths;
 
     @Override
@@ -116,7 +118,8 @@ public class NewAdActivity extends LocationActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            imagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
+//            imagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
+            pendingImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
 
             Log.i(TAG, "Image path: " + imagePath);
 
@@ -161,12 +164,13 @@ public class NewAdActivity extends LocationActivity {
         boolean success = response.getBoolean("success");
         String message = response.getString("message");
 
-        if(imagePath != null) {
+        if(pendingImagePath != null) {
             // Image upload pending
             if(message.equals("Upload successful")) {
                 // Image upload successful
                 newAd.setExtFilename(response.getString("extFilename"));
-                imagePath = null;
+                imagePath = pendingImagePath;
+                pendingImagePath = null;
                 mAdManager.postAdToServer(newAd);
             } else {
                 // Image upload unsuccessful
@@ -186,6 +190,8 @@ public class NewAdActivity extends LocationActivity {
 
             if(success) {
                 newAd.setId(id);
+
+                // TODO: save image to local storage
 
                 Intent intent = new Intent(this, AdViewActivity.class);
                 Bundle bundle = new Bundle();

@@ -109,7 +109,7 @@ public class ServerRequest {
                 os.write(buffer, 0, bytesRead);
             }
             os.close();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
 

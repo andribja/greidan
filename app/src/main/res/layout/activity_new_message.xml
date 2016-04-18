@@ -55,10 +55,18 @@
                 android:id="@+id/linearLayout" >
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:text="@string/action_message_post"
                     android:id="@+id/new_message_button_post"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"/>
+
+                <Button
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_message_cancel"
+                    android:id="@+id/new_message_button_cancel"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"/>
             </LinearLayout>

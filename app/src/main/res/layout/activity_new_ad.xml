@@ -87,7 +87,7 @@
                 android:layout_marginTop="10dp">
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:text="@string/action_ad_post"
                     android:id="@+id/new_ad_button_post"
@@ -95,7 +95,7 @@
                     android:layout_weight="1"/>
 
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:text="@string/action_ad_cancel"
                     android:id="@+id/new_ad_button_cancel"

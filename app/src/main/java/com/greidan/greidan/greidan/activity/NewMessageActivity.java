@@ -24,6 +24,7 @@ public class NewMessageActivity extends ProgressActivity {
     EditText mSubject;
     EditText mContent;
     Button mButtonPost;
+    Button mButtonCancel;
 
     Message newMessage;
     String recipientName;
@@ -49,6 +50,14 @@ public class NewMessageActivity extends ProgressActivity {
                 String content = mContent.getText().toString();
 
                 attemptPostMessage(subject, content);
+            }
+        });
+
+        mButtonCancel = (Button) findViewById(R.id.new_message_button_cancel);
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

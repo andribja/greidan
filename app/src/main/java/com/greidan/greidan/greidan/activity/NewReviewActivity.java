@@ -28,6 +28,7 @@ public class NewReviewActivity extends ProgressActivity {
     EditText mContent;
     RatingBar mRatingBar;
     Button mButtonPost;
+    Button mButtonCancel;
 
     String revieweeName;
     Review newReview;
@@ -56,6 +57,14 @@ public class NewReviewActivity extends ProgressActivity {
                 double rating = mRatingBar.getRating();
 
                 attemptPostReview(revieweeName, content, rating);
+            }
+        });
+
+        mButtonCancel = (Button) findViewById(R.id.button_review_cancel);
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

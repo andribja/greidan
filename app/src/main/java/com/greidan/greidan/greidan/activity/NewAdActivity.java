@@ -94,6 +94,12 @@ public class NewAdActivity extends LocationActivity {
         });
 
         mButtonCancel = (Button) findViewById(R.id.new_ad_button_cancel);
+        mButtonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         mContainerView = findViewById(R.id.new_ad_container);
         mProgressView = findViewById(R.id.new_ad_progress);

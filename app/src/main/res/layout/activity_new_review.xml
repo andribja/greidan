@@ -52,12 +52,27 @@
             android:id="@+id/new_review_rating"
             android:layout_gravity="center_horizontal" />
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Senda"
-            android:id="@+id/button_post_review"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:text="Senda"
+                android:id="@+id/button_post_review"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <Button
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:text="Hætta við"
+                android:id="@+id/button_review_cancel"
+                android:layout_weight="1" />
+        </LinearLayout>
 
     </LinearLayout>
 </RelativeLayout>

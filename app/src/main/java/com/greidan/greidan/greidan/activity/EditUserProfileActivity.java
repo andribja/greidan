@@ -101,6 +101,13 @@ public class EditUserProfileActivity extends ProgressActivity {
                 }
             }
         });
+
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     
     private void postUpdates() {

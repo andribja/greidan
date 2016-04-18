@@ -68,7 +68,10 @@
             android:label="Skilaboð" />
         <activity
             android:name=".activity.NewReviewActivity"
-            android:label="New review"></activity>
+            android:label="New review" />
+        <activity
+            android:name=".activity.UserAdListActivity"
+            android:label="User ads"></activity>
     </application>
 
 </manifest>

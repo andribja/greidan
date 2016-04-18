@@ -39,7 +39,7 @@ public class AdManager {
     String adUrl;
     String imageUploadUrl;
     String imageUrl;
-    
+    String userAdsUrl;
 
     public AdManager(Activity activity) {
         this.activity = activity;
@@ -53,6 +53,7 @@ public class AdManager {
             adUrl = host + ":" + port + "/ad";
             imageUploadUrl = host + ":" + port + "/uploadAdImg";
             imageUrl = host + ":" + port + "/ad_img";
+            userAdsUrl = host + ":" + port + "/userAds";
         }
     }
 
@@ -147,6 +148,22 @@ public class AdManager {
         }
 
         ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
+        task.execute();
+    }
+
+    public void fetchAdsByToken() {
+        ArrayList<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("token", userManager.getToken())); // INSECURE
+
+        ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, params);
+        task.execute();
+    }
+
+    public void fetchAdsByUsername(String username) {
+        ArrayList<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("author_name", username));
+
+        ServerTask task = new ServerTask((ProgressActivity) activity, userAdsUrl, false, params);
         task.execute();
     }
 

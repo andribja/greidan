@@ -76,6 +76,9 @@
     <string name="button_cancel">Hætta við</string>
     <string name="profile_edit">Breyta</string>
 
+    <!-- Strings related to review-->
+    <string name="new_review_label">Skrifa umsögn fyrir notandann %1$s</string>
+
     <!-- Random junk-->
     <string-array name="categories">
         <item>Handverk</item>

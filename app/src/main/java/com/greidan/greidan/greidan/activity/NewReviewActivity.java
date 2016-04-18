@@ -47,6 +47,7 @@ public class NewReviewActivity extends ProgressActivity {
         revieweeName = getIntent().getStringExtra("revieweeName");
 
         mRevieweeLabel = (TextView) findViewById(R.id.new_reviewee_label);
+        mRevieweeLabel.setText(getString(R.string.new_review_label, revieweeName));
         mContent = (EditText) findViewById(R.id.new_review_content);
         mRatingBar = (RatingBar) findViewById(R.id.new_review_rating);
         mButtonPost = (Button) findViewById(R.id.button_post_review);

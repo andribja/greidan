@@ -40,6 +40,9 @@ public class NewReviewActivity extends ProgressActivity {
         reviewManager = new ReviewManager(this);
         userManager = new UserManager(this);
 
+        mContainerView = findViewById(R.id.new_review_container);
+        mProgressView = findViewById(R.id.new_review_progress);
+
         revieweeName = getIntent().getStringExtra("revieweeName");
 
         mRevieweeLabel = (TextView) findViewById(R.id.new_reviewee_label);
@@ -58,8 +61,10 @@ public class NewReviewActivity extends ProgressActivity {
     }
 
     private void attemptPostReview(String revieweeName, String content, double rating) {
+        // TODO: validate input?
         newReview = new Review(null, rating, content, revieweeName, userManager.getLoggedInUsername(), new Date());
 
+        showProgress(true);
         reviewManager.postReviewToServer(newReview);
     }
 

@@ -2,7 +2,9 @@ package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -35,6 +38,7 @@ public class UserProfileActivity extends ProgressActivity {
     User user;
     HashMap<String, Review> reviews;
 
+    ImageView mImageView;
     TextView mUsernameView;
     TextView mEmailView;
     TextView mMemberSinceView;
@@ -53,6 +57,7 @@ public class UserProfileActivity extends ProgressActivity {
         userManager = new UserManager(this);
         //userManager.fetchUserProfileByUsername(username);
 
+        mImageView = (ImageView) findViewById(R.id.image_profile);
         mUsernameView = (TextView) findViewById(R.id.label_username);
         mEmailView = (TextView) findViewById(R.id.label_email);
         mMemberSinceView = (TextView) findViewById(R.id.label_member_since);
@@ -83,7 +88,19 @@ public class UserProfileActivity extends ProgressActivity {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("reviewlist", foo);
         doUponCompletion(bundle);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String profileImagePath = userManager.getProfileImagePath();
+
+        if(profileImagePath != null) {
+            mImageView.setImageBitmap(BitmapFactory.decodeFile(profileImagePath));
+        } else {
+            mImageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null));
+        }
     }
 
     @Override
@@ -101,11 +118,11 @@ public class UserProfileActivity extends ProgressActivity {
             mReviewList.setAdapter(new ReviewAdapter(this, reviewList));
         }
 
-        if(response.containsKey("users")) {
+        if(response.containsKey("users") || true) {
             // Temporary until users can be retrieved from server
 //            List<User> userList = response.getParcelableArrayList("userlist");
             List<User> userList = new ArrayList<>();
-            userList.add(new User("123", "foobar", "foo@bar.com", new Date(), "imgpath", 3.5));
+            userList.add(new User("123", "foobar", "foo@bar.com", new Date(), 3.5));
             if(userList.size() ==1) {
                 user = userList.get(0);
 

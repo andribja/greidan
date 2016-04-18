@@ -2,17 +2,20 @@ package com.greidan.greidan.greidan.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.AdManager;
@@ -20,7 +23,7 @@ import com.greidan.greidan.greidan.manager.UserManager;
 
 import java.util.List;
 
-public class MainActivity extends ProgressActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends ProgressActivity {
 
     AdManager adManager;
     UserManager userManager;
@@ -31,6 +34,9 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
     Button mButtonNewPost;
     ListView mCategoryList;
 
+    ImageView mSidebarImage;
+    TextView mSideBarUsername;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +45,30 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
         adManager = new AdManager(this);
         userManager = new UserManager(this);
 
+        if(!userManager.isLoggedIn()) {
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }
+
+        mContainerView = findViewById(R.id.main_container);
+        mProgressView = findViewById(R.id.main_progress);
+
+        mCategoryList = (ListView) findViewById(R.id.main_categories);
+        mCategoryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String category = (String) ((ListView) view.getParent()).getItemAtPosition(position);
+
+                Intent intent = new Intent(MainActivity.this, AdListActivity.class);
+                intent.putExtra("category", category);
+                startActivity(intent);
+            }
+        });
+
+        //showProgress(true);
+        adManager.fetchCategories();
+
+        // Set up sidebar
         mSideBar = (LinearLayout) findViewById(R.id.main_sidebar);
         mSideBarList = (ListView) findViewById(R.id.main_sidebar_list);
         mSideBarList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -60,21 +90,10 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
         });
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        mSidebarImage = (ImageView) findViewById(R.id.sidebar_image);
+        mSideBarUsername = (TextView) findViewById(R.id.sidebar_username);
 
-        mCategoryList = (ListView) findViewById(R.id.main_categories);
-        mCategoryList.setOnItemClickListener(this);
-
-        mContainerView = findViewById(R.id.main_container);
-        mProgressView = findViewById(R.id.main_progress);
-
-        //showProgress(true);
-        adManager.fetchCategories();
-
-        if(!userManager.isLoggedIn()) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
-
+        // Set up buttons
         mButtonNewPost = (Button) findViewById(R.id.button_new_post);
         mButtonNewPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +104,18 @@ public class MainActivity extends ProgressActivity implements AdapterView.OnItem
         });
     }
 
-    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String profileImagePath = userManager.getProfileImagePath();
 
-        String category = (String) ((ListView) v.getParent()).getItemAtPosition(position);
+        if(profileImagePath != null) {
+            mSidebarImage.setImageBitmap(BitmapFactory.decodeFile(profileImagePath));
+        } else {
+            mSidebarImage.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.mipmap.ic_launcher, null));
+        }
 
-        Intent intent = new Intent(this, AdListActivity.class);
-        intent.putExtra("category", category);
-        startActivity(intent);
+        mSideBarUsername.setText(userManager.getLoggedInUsername());
     }
 
     @Override

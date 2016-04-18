@@ -2,7 +2,7 @@
     <string name="app_name">Greiðan</string>
     <string name="action_settings">Settings</string>
 
-    <string name="host">http://10.0.2.2</string>
+    <string name="host">http://192.168.43.57</string>
     <string name="port">8080</string>
 
     <!-- Activity titles-->

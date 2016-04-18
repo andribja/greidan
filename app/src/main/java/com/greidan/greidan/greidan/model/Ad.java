@@ -1,12 +1,9 @@
 package com.greidan.greidan.greidan.model;
 
-import android.content.ContentValues;
 import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
-import com.greidan.greidan.greidan.DbSchema;
 import com.greidan.greidan.greidan.manager.UserManager;
 
 import org.apache.http.NameValuePair;
@@ -61,22 +58,6 @@ public class Ad implements Parcelable {
         if(jsonAd.has("imgPath")) {
             this.extFilename = jsonAd.getString("imgPath");
         }
-    }
-
-    public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-
-        values.put(DbSchema.AdTable.Cols.ID, id);
-        values.put(DbSchema.AdTable.Cols.TITLE, title);
-        values.put(DbSchema.AdTable.Cols.CONTENT, content);
-        values.put(DbSchema.AdTable.Cols.CATEGORY, category);
-        values.put(DbSchema.AdTable.Cols.AUTHOR_ID, authorName);
-        values.put(DbSchema.AdTable.Cols.TIME_POSTED, timePosted.toString());
-        values.put(DbSchema.AdTable.Cols.ADDRESS, location.getProvider());
-        values.put(DbSchema.AdTable.Cols.LAT, location.getLatitude());
-        values.put(DbSchema.AdTable.Cols.LNG, location.getLongitude());
-
-        return values;
     }
 
     public ArrayList<NameValuePair> getAsRequestParams() {

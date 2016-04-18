@@ -124,13 +124,11 @@ public class NewAdActivity extends LocationActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK) {
             Uri selectedImageUri = data.getData();
-//            imagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
             pendingImagePath = RealPathUtil.getRealPathFromURI_API19(this, selectedImageUri);
 
             Log.i(TAG, "Image path: " + pendingImagePath);
 
             mImagePicker.setImageBitmap(BitmapFactory.decodeFile(pendingImagePath));
-//            addImage(imagePath);
         }
     }
 

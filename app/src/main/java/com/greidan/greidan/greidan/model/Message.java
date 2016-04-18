@@ -1,10 +1,8 @@
 package com.greidan.greidan.greidan.model;
 
-import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.greidan.greidan.greidan.DbSchema;
 import com.greidan.greidan.greidan.manager.UserManager;
 
 import org.apache.http.NameValuePair;
@@ -47,20 +45,6 @@ public class Message implements Parcelable {
         this.recipientName = jsonMessage.getString("recipient_name");
         this.authorName = jsonMessage.getString("author_name");
         this.timePosted = new Date(jsonMessage.getLong("timePosted"));
-    }
-
-    public ContentValues getContentValues() {
-        ContentValues values = new ContentValues();
-
-        values.put(DbSchema.MessageTable.Cols.ID, id);
-        values.put(DbSchema.MessageTable.Cols.SUBJECT, subject);
-        values.put(DbSchema.MessageTable.Cols.CONTENT, content);
-//        values.put(DbSchema.MessageTable.Cols.AUTHOR_ID, authorId);
-//        values.put(DbSchema.MessageTable.Cols.RECIPIENT_ID, recipientId);
-        values.put(DbSchema.MessageTable.Cols.AUTHOR_NAME, authorName);
-        values.put(DbSchema.MessageTable.Cols.TIME_POSTED, timePosted.toString());
-
-        return values;
     }
 
     public ArrayList<NameValuePair> getAsRequestParams() {

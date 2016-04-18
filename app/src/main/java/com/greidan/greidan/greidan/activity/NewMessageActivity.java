@@ -1,7 +1,5 @@
 package com.greidan.greidan.greidan.activity;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +10,6 @@ import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.MessageManager;
 import com.greidan.greidan.greidan.manager.UserManager;
 import com.greidan.greidan.greidan.model.Message;
-import com.greidan.greidan.greidan.model.User;
 
 import java.util.Date;
 

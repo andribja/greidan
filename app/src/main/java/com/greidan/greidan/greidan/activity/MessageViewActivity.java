@@ -10,8 +10,6 @@ import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.manager.MessageManager;
 import com.greidan.greidan.greidan.model.Message;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 

@@ -106,6 +106,7 @@ public class User implements Parcelable {
         this.localImagePath = localImage;
     }
 
+
     /// Impelemnt parcelable
 
     @Override

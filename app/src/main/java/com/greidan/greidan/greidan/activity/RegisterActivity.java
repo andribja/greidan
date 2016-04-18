@@ -28,7 +28,7 @@ import java.util.List;
 
 
 /**
- * A login screen that offers login via email/password.
+ * A register screen that offers register via email
  */
 public class RegisterActivity extends ProgressActivity implements LoaderCallbacks<Cursor> {
 

@@ -30,7 +30,6 @@ public class AdViewActivity extends ProgressActivity {
     TextView mContent;
 
     LinearLayout mImagesLayout;
-    ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

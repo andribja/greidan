@@ -112,16 +112,6 @@ public class UserManager {
     public String getProfileImagePath() {
         return prefs.getString("imagePath", null);
     }
-
-//    public User findUserByUsername(String username) {
-//        // TODO: Implement this; query database or contact server to find user
-//        return new User(0, username, null);
-//    }
-
-//    public User getUserById(int id) {
-//        // TODO: Implement this: query database or contact server to find user
-////        return new User(id, "user_from_id", "userfrom@id.com");
-//    }
     
     public void fetchLoggedInUserProfile() {
         ArrayList<NameValuePair> params = new ArrayList<>();

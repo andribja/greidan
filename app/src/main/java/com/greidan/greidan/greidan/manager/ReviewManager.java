@@ -5,10 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.greidan.greidan.greidan.DbHelper;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
-import com.greidan.greidan.greidan.model.Ad;
 import com.greidan.greidan.greidan.model.Review;
 import com.greidan.greidan.greidan.util.ServerRequest;
 
@@ -18,11 +16,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.jar.Attributes;
 
 public class ReviewManager {
 

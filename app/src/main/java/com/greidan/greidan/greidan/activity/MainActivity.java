@@ -65,7 +65,6 @@ public class MainActivity extends ProgressActivity {
             }
         });
 
-        //showProgress(true);
         adManager.fetchCategories();
 
         // Set up sidebar

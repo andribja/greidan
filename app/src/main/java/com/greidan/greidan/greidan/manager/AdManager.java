@@ -1,16 +1,12 @@
 package com.greidan.greidan.greidan.manager;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.greidan.greidan.greidan.model.Ad;
-import com.greidan.greidan.greidan.DbHelper;
-import com.greidan.greidan.greidan.DbSchema;
 import com.greidan.greidan.greidan.R;
 import com.greidan.greidan.greidan.util.ServerRequest;
 import com.greidan.greidan.greidan.activity.ProgressActivity;
@@ -32,7 +28,6 @@ public class AdManager {
     private static final String TAG = "AdManager";
 
     UserManager userManager;
-    DbHelper dbHelper;
 
     Activity activity;
 
@@ -44,7 +39,6 @@ public class AdManager {
     public AdManager(Activity activity) {
         this.activity = activity;
         userManager = new UserManager(activity);
-        dbHelper = new DbHelper(activity);
 
         if(activity != null) {
             String host = activity.getString(R.string.host);
@@ -55,73 +49,6 @@ public class AdManager {
             imageUrl = host + ":" + port + "/ad_img";
             userAdsUrl = host + ":" + port + "/userAds";
         }
-    }
-
-    public Ad fetchAd(int id) {
-        // TODO: query db or server for data
-        // TODO: Properly implement
-
-        /*
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String[] projection = {"*"};
-        String selection = DbSchema.AdTable.Cols.ID;
-        String[] selectionArgs = {Integer.toString(id)};
-
-        Cursor cursor = db.query(
-                DbSchema.AdTable.NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        cursor.moveToFirst();
-        if(cursor.getInt(cursor.getColumnIndex(DbSchema.AdTable.Cols.ID)) >= 0) {
-            String title = cursor.getString(cursor.getColumnIndex(DbSchema.AdTable.Cols.TITLE));
-            String content = cursor.getString(cursor.getColumnIndex(DbSchema.AdTable.Cols.CONTENT));
-            String category = cursor.getString(cursor.getColumnIndex(DbSchema.AdTable.Cols.CATEGORY));
-            int authorId = cursor.getInt(cursor.getColumnIndex(DbSchema.AdTable.Cols.AUTHOR_ID));
-            String timePostedStr = cursor.getString(cursor.getColumnIndex(DbSchema.AdTable.Cols.TIME_POSTED));
-            String address = cursor.getString(cursor.getColumnIndex(DbSchema.AdTable.Cols.ADDRESS));
-            double lat = cursor.getDouble(cursor.getColumnIndex(DbSchema.AdTable.Cols.LAT));
-            double lng = cursor.getDouble(cursor.getColumnIndex(DbSchema.AdTable.Cols.LNG));
-
-            DateFormat df = DateFormat.getDateInstance();
-            Date timePosted = null;
-            try {
-                timePosted = df.parse(timePostedStr);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-            Location location = new Location(address);
-            location.setLatitude(lat);
-            location.setLongitude(lng);
-
-            return new Ad(id, title, content, category, userManager.findUserById(authorId), timePosted, location);
-        } */
-
-        ArrayList<NameValuePair> requestParams = new ArrayList<NameValuePair>();
-        requestParams.add(new BasicNameValuePair("id", Integer.toString(id)));
-
-        ServerTask task = new ServerTask((ProgressActivity) activity, adUrl, false, requestParams);
-        task.execute();
-
-        return null;
-    }
-
-    public void saveAd(Ad ad) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = ad.getContentValues();
-
-        long newRowId = db.insert(
-                DbSchema.AdTable.NAME,
-                null,
-                values
-        );
     }
 
     public void postAdToServer(Ad ad) {
